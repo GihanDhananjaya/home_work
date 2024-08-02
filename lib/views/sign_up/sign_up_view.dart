@@ -45,7 +45,7 @@ class _SignUpViewState extends State<SignUpView> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 40),
+                  SizedBox(height: 42),
                   Text(
                     "Welcome to the Job Tasker",
                     style: TextStyle(
