@@ -147,12 +147,12 @@ class _BottomBarViewState extends State<BottomBarView> {
                 name: 'Profile',
                 icon: AppImages.icUser,
                 onTap: () {
-                  if (_selectedPage != 3) {
-                    setState(() {
-                      _selectedPage = 3;
-                    });
-                  }
-                },
+                    if (_selectedPage != 3) {
+                      setState(() {
+                        _selectedPage = 3;
+                      });
+                    }
+                  },
                 isSelected:  _selectedPage == 3,
               ),
               // BottomBarItem(
