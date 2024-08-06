@@ -218,58 +218,58 @@ class _AppMobileNumberFieldState extends State<AppMobileNumberField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.only(bottom: 6, right: 6),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              if (widget.titleImage != null)
-                Row(
-                  children: [
-                    Image.asset(
-                      widget.titleImage!,
-                      height: 20,
-                    ),
-                    SizedBox(width: 4),
-                  ],
-                ),
-              Expanded(
-                child: Row(
-                  children: [
-                    Text(
-                      (widget.label != null ? widget.label! : ''),
-                      style: TextStyle(
-                        fontSize: AppDimensions.kFontSize14,
-                        fontWeight: FontWeight.w500,
-                        color: widget.isPreLogin
-                            ? widget.changeColorOnDisable!
-                            ? AppColors.fontColorGray
-                            .withOpacity(0.4)
-                            : AppColors.fontColorGray
-                            : widget.changeColorOnDisable!
-                            ? AppColors.fontColorGray
-                            .withOpacity(0.4)
-                            : AppColors.fontColorGray
-                      ),
-                    ),
-                    Baseline(
-                      baseline: 6,
-                      baselineType: TextBaseline.alphabetic,
-                      child: Text(
-                        widget.isRequired! ? ' \u2217' : '',
-                        style: TextStyle(
-                          fontSize: AppDimensions.kFontSize14,
-                          fontWeight: FontWeight.w500,
-                          color:AppColors.fontColorGray
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
+        // Padding(
+        //   padding: EdgeInsets.only(bottom: 6, right: 6),
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     children: [
+        //       if (widget.titleImage != null)
+        //         Row(
+        //           children: [
+        //             Image.asset(
+        //               widget.titleImage!,
+        //               height: 20,
+        //             ),
+        //             SizedBox(width: 4),
+        //           ],
+        //         ),
+        //       Expanded(
+        //         child: Row(
+        //           children: [
+        //             Text(
+        //               (widget.label != null ? widget.label! : ''),
+        //               style: TextStyle(
+        //                 fontSize: AppDimensions.kFontSize14,
+        //                 fontWeight: FontWeight.w500,
+        //                 color: widget.isPreLogin
+        //                     ? widget.changeColorOnDisable!
+        //                     ? AppColors.fontColorGray
+        //                     .withOpacity(0.4)
+        //                     : AppColors.fontColorGray
+        //                     : widget.changeColorOnDisable!
+        //                     ? AppColors.fontColorGray
+        //                     .withOpacity(0.4)
+        //                     : AppColors.fontColorGray
+        //               ),
+        //             ),
+        //             Baseline(
+        //               baseline: 6,
+        //               baselineType: TextBaseline.alphabetic,
+        //               child: Text(
+        //                 widget.isRequired! ? ' \u2217' : '',
+        //                 style: TextStyle(
+        //                   fontSize: AppDimensions.kFontSize14,
+        //                   fontWeight: FontWeight.w500,
+        //                   color:AppColors.fontColorGray
+        //                 ),
+        //               ),
+        //             ),
+        //           ],
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
         TextFormField(
           onChanged: (number) {
             widget.onChange(
@@ -308,7 +308,7 @@ class _AppMobileNumberFieldState extends State<AppMobileNumberField> {
               //   Radius.circular(6),
               // ),
               borderSide: BorderSide(
-                color: AppColors.fontColorGray,
+                color: AppColors.fontColorWhite,
                 width: 0.75,
               ),
             ),
@@ -317,7 +317,7 @@ class _AppMobileNumberFieldState extends State<AppMobileNumberField> {
                 Radius.circular(6),
               ),
               borderSide: BorderSide(
-                color: AppColors.fontColorGray,
+                color: AppColors.fontColorWhite,
                 width: 0.75,
               ),
             ),
@@ -326,7 +326,7 @@ class _AppMobileNumberFieldState extends State<AppMobileNumberField> {
                 Radius.circular(6),
               ),
               borderSide: BorderSide(
-                color: AppColors.fontColorGray,
+                color: AppColors.fontColorWhite,
                 width: 0.75,
               ),
             ),

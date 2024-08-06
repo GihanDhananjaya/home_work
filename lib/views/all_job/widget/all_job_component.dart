@@ -24,6 +24,7 @@ class AllJobComponent extends StatefulWidget {
   String? showDate;
   final VoidCallback? setDate;
   final TextEditingController? adminDescriptionController;
+  final String? isAdmin;
 
   AllJobComponent({required this.name,
     this.title,
@@ -35,7 +36,9 @@ class AllJobComponent extends StatefulWidget {
     this.mobileNumber,
     this.showDate,
     this.userName,
-    this.showTime,this.adminDescriptionController});
+    this.showTime,this.adminDescriptionController,
+    this.isAdmin
+  });
 
   @override
   State<AllJobComponent> createState() => _AllJobComponentState();
@@ -99,7 +102,7 @@ class _AllJobComponentState extends State<AllJobComponent> {
                     fontSize: AppDimensions.kFontSize14,
                   ),
                 ),
-
+                widget.isAdmin! == 'admin' ?
                 GestureDetector(
                   onTap: widget.onTap,
                   child: Container(
@@ -120,7 +123,7 @@ class _AllJobComponentState extends State<AllJobComponent> {
                       ),
                     ),
                   ),
-                ),
+                ):SizedBox.shrink(),
               ],
             ),
             SizedBox(height: 10),
@@ -299,7 +302,7 @@ class _AllJobComponentState extends State<AllJobComponent> {
 
             ///Admin Part
 
-
+            widget.isAdmin! == 'admin' ?
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -327,9 +330,11 @@ class _AllJobComponentState extends State<AllJobComponent> {
                   ],
                 ),
               ],
-            ),
-            SizedBox(height: 20),
-            AppTextField(hint: 'Admin Description',controller: widget.adminDescriptionController,)
+            ):SizedBox.shrink(),
+            widget.isAdmin! == 'admin'?
+            SizedBox(height: 20):SizedBox.shrink(),
+            widget.isAdmin! == 'admin'?
+            AppTextField(hint: 'Admin Description',controller: widget.adminDescriptionController,):SizedBox.shrink()
           ],
         ),
       ),

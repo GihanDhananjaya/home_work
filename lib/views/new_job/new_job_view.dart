@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth
 import 'package:home_work/common/app_button.dart';
 import 'package:home_work/utils/app_colors.dart';
 import 'package:home_work/views/new_job/widget/date_component.dart';
@@ -12,13 +13,11 @@ import '../../common/app_mobile_number_field.dart';
 import '../../common/app_text_field.dart';
 
 class NewJobView extends StatefulWidget {
-
   @override
   State<NewJobView> createState() => _NewJobViewState();
 }
 
 class _NewJobViewState extends State<NewJobView> {
-
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
   final locationController = TextEditingController();
@@ -43,28 +42,28 @@ class _NewJobViewState extends State<NewJobView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.containerColor7,
-        appBar: AppBar(
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  AppColors.btnGradient1,
-                  AppColors.fontColorDark
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+      appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                AppColors.btnGradient1,
+                AppColors.fontColorDark,
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
           ),
-          title: Text(
-            'Create Job',
-            style: TextStyle(color: Colors.white),
-          ),
         ),
+        title: Text(
+          'Create Job',
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
       body: SingleChildScrollView(
         physics: BouncingScrollPhysics(),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0,vertical: 20),
+          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
           child: Column(
             children: [
               AppDropDownField(
@@ -83,7 +82,7 @@ class _NewJobViewState extends State<NewJobView> {
                   });
                 },
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 20),
               AppDropDownField(
                 guideTitle: "Select Device",
                 width: 150,
@@ -100,60 +99,51 @@ class _NewJobViewState extends State<NewJobView> {
                   });
                 },
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 20),
               AppTextField(
                 inputType: TextInputType.name,
                 controller: deviceTypeController,
                 hint: 'Device Type',
                 onTextChanged: (value) {
-                  setState(() {
-
-                  });
+                  setState(() {});
                 },
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 20),
               AppTextField(
                 inputType: TextInputType.name,
                 controller: nameController,
                 hint: 'Name',
                 onTextChanged: (value) {
-                  setState(() {
-        
-                  });
+                  setState(() {});
                 },
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 20),
               AppTextField(
                 inputType: TextInputType.name,
                 controller: locationController,
                 hint: 'Location',
                 onTextChanged: (value) {
-                  setState(() {
-        
-                  });
+                  setState(() {});
                 },
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 20),
               AppTextField(
                 inputType: TextInputType.name,
                 controller: descriptionController,
                 hint: 'Description',
                 onTextChanged: (value) {
-                  setState(() {
-        
-                  });
+                  setState(() {});
                 },
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 20),
               AppMobileNumberField(
                 hint: 'Mobile Number',
                 isRequired: true,
                 focusNode: focusNode,
                 initialCountryCode: phoneNumber != null
-                    ? phoneNumber!.countryCode
-                    .replaceAll('+', '')
+                    ? phoneNumber!.countryCode.replaceAll('+', '')
                     : null,
-                onChange: (phone ) {
+                onChange: (phone) {
                   setState(() {
                     if (phone.number.isNotEmpty) {
                       phoneNumber = phone;
@@ -164,14 +154,22 @@ class _NewJobViewState extends State<NewJobView> {
                     }
                   });
                 },
-                controller: mobileNumberController, onCountryChange: (country ) {  focusNode.requestFocus(); },),
-              SizedBox(height: 20,),
+                controller: mobileNumberController,
+                onCountryChange: (country) {
+                  focusNode.requestFocus();
+                },
+              ),
+              SizedBox(height: 20),
               GestureDetector(
-                  onTap: (){
-                    _selectDate(context);
-                  },
-                  child: DateComponent(icon: Icons.date_range, name: selectedFormatDate!,)),
-              SizedBox(height: 50,),
+                onTap: () {
+                  _selectDate(context);
+                },
+                child: DateComponent(
+                  icon: Icons.date_range,
+                  name: selectedFormatDate!,
+                ),
+              ),
+              SizedBox(height: 50),
               AppButton(
                 buttonColor: AppColors.containerColor1,
                 buttonText: 'Submit',
@@ -179,8 +177,28 @@ class _NewJobViewState extends State<NewJobView> {
                   if (nameController.text.isNotEmpty &&
                       descriptionController.text.isNotEmpty &&
                       _categoryType != null) {
+                    // Get the current user's ID
+                    User? currentUser = FirebaseAuth.instance.currentUser;
+                    if (currentUser == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('User not logged in'),
+                        ),
+                      );
+                      return;
+                    }
+
+                    // Fetch the user's role from Firestore
+                    DocumentSnapshot userDoc = await FirebaseFirestore.instance
+                        .collection('users')
+                        .doc(currentUser.uid)
+                        .get();
+
+                    String userRole = userDoc['user_role'] ?? '';
+
                     // Create a map with the data
                     Map<String, dynamic> jobData = {
+                      'user_id': currentUser.uid, // Add user ID to the job data
                       'name': nameController.text,
                       'location': locationController.text,
                       'description': descriptionController.text,
@@ -189,38 +207,49 @@ class _NewJobViewState extends State<NewJobView> {
                       'device': _deviceType!.data,
                       'date': selectedFormatDate!,
                       'mobile_number': mobileNumberController.text,
+                      'user_role': userRole
                     };
-        
+
                     // Add the data to Firestore
-                    await FirebaseFirestore.instance.collection('job').
-                    add(jobData);
-        
+                    await FirebaseFirestore.instance.collection('job').add(jobData);
+
                     // Clear the fields after submission
                     nameController.clear();
                     descriptionController.clear();
+                    locationController.clear();
+                    deviceTypeController.clear();
+                    mobileNumberController.clear();
                     setState(() {
                       _categoryType = null;
+                      _deviceType = null;
+                      phoneNumber = null;
+                      selectedOpaimentDate = DateTime.now();
+                      selectedFormatDate = DateFormat('MMM d, yyyy').format(selectedOpaimentDate);
                     });
-        
+
                     // Show a success message
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text('Job created successfully!'),
-                    ));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Job created successfully!'),
+                      ),
+                    );
                   } else {
                     // Show an error message if any field is empty
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content: Text('Please fill all the fields.'),
-                    ));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Please fill all the fields.'),
+                      ),
+                    );
                   }
                 },
               ),
-        
             ],
           ),
         ),
       ),
     );
   }
+
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -235,5 +264,4 @@ class _NewJobViewState extends State<NewJobView> {
       });
     }
   }
-
 }

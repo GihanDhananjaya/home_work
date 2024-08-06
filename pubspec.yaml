@@ -55,6 +55,7 @@ dependencies:
   gauge_indicator: ^0.4.3
   shimmer: ^3.0.0
   cached_network_image: ^3.3.0
+  in_app_update: ^4.2.3
 
 dev_dependencies:
   flutter_test:
