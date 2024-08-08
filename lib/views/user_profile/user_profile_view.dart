@@ -116,7 +116,7 @@ class _UserProfileState extends State<UserProfile> {
                           backgroundColor: AppColors.fontColorGray.withOpacity(0.7),
                           child: Center(
                             child: Text(
-                              'GD',
+                              userName!,
                               style: TextStyle(
                                 color: AppColors.fontColorWhite,
                                 fontSize: AppDimensions.kFontSize28,

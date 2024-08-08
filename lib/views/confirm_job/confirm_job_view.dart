@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:home_work/views/confirm_job/widget/confirm_job_component.dart';
@@ -13,70 +14,14 @@ class ConfirmJobView extends StatefulWidget {
 }
 
 class _ConfirmJobViewState extends State<ConfirmJobView> {
-  // Method to delete a document from Firestore
-  Future<void> _deleteDocument(String docId) async {
-    try {
-      await FirebaseFirestore.instance.collection('confirm_job').doc(docId).delete();
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Item deleted successfully')));
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error deleting item: $e')));
-    }
+  String userRole = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _checkUserRole();
   }
 
-  // Method to show a dialog for editing a document
-  Future<void> _editDocument(String docId, String firstName, String lastName) async {
-    TextEditingController firstNameController = TextEditingController(text: firstName);
-    TextEditingController lastNameController = TextEditingController(text: lastName);
-
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // User must tap a button to close the dialog
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Edit Details'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                TextField(
-                  controller: firstNameController,
-                  decoration: InputDecoration(labelText: 'First Name'),
-                ),
-                TextField(
-                  controller: lastNameController,
-                  decoration: InputDecoration(labelText: 'Last Name'),
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text('Save'),
-              onPressed: () async {
-                try {
-                  await FirebaseFirestore.instance.collection('personal_details').doc(docId).update({
-                    'first_name': firstNameController.text,
-                    'last_name': lastNameController.text,
-                  });
-                  Navigator.of(context).pop();
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Item updated successfully')));
-                } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error updating item: $e')));
-                }
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   Time? _parseTime(String? timeString) {
     if (timeString == null) return null;
@@ -102,17 +47,28 @@ class _ConfirmJobViewState extends State<ConfirmJobView> {
     return null; // Return null if parsing fails
   }
 
+  Future<void> _checkUserRole() async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(currentUser.uid).get();
+      setState(() {
+        userRole = userDoc['user_role'];
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    User? currentUser = FirebaseAuth.instance.currentUser;
     return Scaffold(
-        backgroundColor: AppColors.containerColor7,
+      backgroundColor: AppColors.containerColor7,
       appBar: AppBar(
         flexibleSpace: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
                 AppColors.btnGradient1,
-                AppColors.fontColorDark
+                AppColors.fontColorDark,
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -124,10 +80,12 @@ class _ConfirmJobViewState extends State<ConfirmJobView> {
           style: TextStyle(color: Colors.white),
         ),
       ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('confirm_job').snapshots(),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: userRole == 'admin'
+            ? FirebaseFirestore.instance.collection('confirm_job').snapshots()
+            : FirebaseFirestore.instance.collection('confirm_job').where('user_id', isEqualTo: currentUser!.uid).snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          if (snapshot.connectionState == ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {

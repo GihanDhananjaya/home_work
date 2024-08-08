@@ -16,6 +16,7 @@ class AllJobView extends StatefulWidget {
 }
 
 class _AllJobViewState extends State<AllJobView> {
+  User? currentUser = FirebaseAuth.instance.currentUser;
   Map<String, Time> _jobTimes = {};
   DateTime selectedDate = DateTime.now();
   String? selectedFormatDate;
@@ -99,11 +100,13 @@ class _AllJobViewState extends State<AllJobView> {
   }
 
   Future<void> _confirmJob(
-      String docId, String category, String description, Time time, String date, String adminDescription, String device, String location, String userName) async {
+      String docId, String category, String description, Time time, String date, String adminDescription,
+      String device, String location, String userName,String userId,String userRole) async {
     try {
       final hour = time.hour > 12 ? time.hour - 12 : time.hour == 0 ? 12 : time.hour;
       final period = time.hour >= 12 ? 'PM' : 'AM';
       final formattedTime = "${hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')} $period";
+
 
       await FirebaseFirestore.instance.collection('confirm_job').add({
         'category': category,
@@ -114,6 +117,8 @@ class _AllJobViewState extends State<AllJobView> {
         'device': device,
         'location': location,
         'name': userName,
+        'user_id': userId,
+        'user_role': userRole,
       });
       await _deleteDocument(docId);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Job confirmed successfully')));
@@ -228,6 +233,8 @@ class _AllJobViewState extends State<AllJobView> {
                       document['device'],
                       document['location'],
                       document['name'],
+                      document['user_id'],
+                      document['user_role'],
                     );
                   },
                   name: document['category'],

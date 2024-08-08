@@ -145,7 +145,7 @@ class _HomeViewState extends State<HomeView> {
                         SizedBox(width: 9),
                         Expanded(
                           child: HomeComponent2(
-                            name: 'Rejected DEFs',
+                            name: 'Rejected Job',
                             number: 5,
                             image: AppImages.appJob4,
                             containerBackGround:
