@@ -6,14 +6,14 @@ import 'package:day_night_time_picker/lib/state/time.dart';
 
 import '../../utils/app_colors.dart';
 
-class ConfirmJobView extends StatefulWidget {
-  const ConfirmJobView({super.key});
+class RejectJobView extends StatefulWidget {
+  const RejectJobView({super.key});
 
   @override
-  State<ConfirmJobView> createState() => _ConfirmJobViewState();
+  State<RejectJobView> createState() => _RejectJobViewState();
 }
 
-class _ConfirmJobViewState extends State<ConfirmJobView> {
+class _RejectJobViewState extends State<RejectJobView> {
   String userRole = '';
 
   @override
@@ -76,14 +76,14 @@ class _ConfirmJobViewState extends State<ConfirmJobView> {
           ),
         ),
         title: Text(
-          'Confirm Jobs',
+          'Reject Jobs',
           style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500,fontSize: 18),
         ),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: userRole == 'admin'
-            ? FirebaseFirestore.instance.collection('confirm_job').snapshots()
-            : FirebaseFirestore.instance.collection('confirm_job').where('user_id', isEqualTo: currentUser!.uid).snapshots(),
+            ? FirebaseFirestore.instance.collection('reject_job').snapshots()
+            : FirebaseFirestore.instance.collection('reject_job').where('user_id', isEqualTo: currentUser!.uid).snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return Center(child: CircularProgressIndicator());

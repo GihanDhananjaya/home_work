@@ -47,57 +47,57 @@ class _AllJobViewState extends State<AllJobView> {
     }
   }
 
-  Future<void> _editDocument(String docId, String firstName, String lastName) async {
-    TextEditingController firstNameController = TextEditingController(text: firstName);
-    TextEditingController lastNameController = TextEditingController(text: lastName);
-
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // User must tap a button to close the dialog
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Edit Details'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                TextField(
-                  controller: firstNameController,
-                  decoration: InputDecoration(labelText: 'First Name'),
-                ),
-                TextField(
-                  controller: lastNameController,
-                  decoration: InputDecoration(labelText: 'Last Name'),
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text('Save'),
-              onPressed: () async {
-                try {
-                  await FirebaseFirestore.instance.collection('personal_details').doc(docId).update({
-                    'first_name': firstNameController.text,
-                    'last_name': lastNameController.text,
-                  });
-                  Navigator.of(context).pop();
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Item updated successfully')));
-                } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error updating item: $e')));
-                }
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // Future<void> _editDocument(String docId, String firstName, String lastName) async {
+  //   TextEditingController firstNameController = TextEditingController(text: firstName);
+  //   TextEditingController lastNameController = TextEditingController(text: lastName);
+  //
+  //   return showDialog<void>(
+  //     context: context,
+  //     barrierDismissible: false, // User must tap a button to close the dialog
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: Text('Edit Details'),
+  //         content: SingleChildScrollView(
+  //           child: ListBody(
+  //             children: <Widget>[
+  //               TextField(
+  //                 controller: firstNameController,
+  //                 decoration: InputDecoration(labelText: 'First Name'),
+  //               ),
+  //               TextField(
+  //                 controller: lastNameController,
+  //                 decoration: InputDecoration(labelText: 'Last Name'),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //         actions: <Widget>[
+  //           TextButton(
+  //             child: Text('Cancel'),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
+  //           TextButton(
+  //             child: Text('Save'),
+  //             onPressed: () async {
+  //               try {
+  //                 await FirebaseFirestore.instance.collection('personal_details').doc(docId).update({
+  //                   'first_name': firstNameController.text,
+  //                   'last_name': lastNameController.text,
+  //                 });
+  //                 Navigator.of(context).pop();
+  //                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Item updated successfully')));
+  //               } catch (e) {
+  //                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error updating item: $e')));
+  //               }
+  //             },
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   Future<void> _confirmJob(
       String docId, String category, String description, Time time, String date, String adminDescription,
@@ -127,17 +127,45 @@ class _AllJobViewState extends State<AllJobView> {
     }
   }
 
-  void _selectTime(String docId) {
-    showPicker(
-      context: context,
-      value: _jobTimes[docId] ?? Time(hour: 11, minute: 30, second: 0),
-      onChange: (Time newTime) {
-        setState(() {
-          _jobTimes[docId] = newTime;
-        });
-      },
-    );
+  Future<void> _rejectJob(
+      String docId, String category, String description, Time time, String date, String adminDescription,
+      String device, String location, String userName,String userId,String userRole) async {
+    try {
+      final hour = time.hour > 12 ? time.hour - 12 : time.hour == 0 ? 12 : time.hour;
+      final period = time.hour >= 12 ? 'PM' : 'AM';
+      final formattedTime = "${hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')} $period";
+
+
+      await FirebaseFirestore.instance.collection('reject_job').add({
+        'category': category,
+        'description': description,
+        'time': formattedTime,
+        'date': date,
+        'admin_description': adminDescription,
+        'device': device,
+        'location': location,
+        'name': userName,
+        'user_id': userId,
+        'user_role': userRole,
+      });
+      await _deleteDocument(docId);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Job reject successfully')));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error reject job: $e')));
+    }
   }
+
+  // void _selectTime(String docId) {
+  //   showPicker(
+  //     context: context,
+  //     value: _jobTimes[docId] ?? Time(hour: 11, minute: 30, second: 0),
+  //     onChange: (Time newTime) {
+  //       setState(() {
+  //         _jobTimes[docId] = newTime;
+  //       });
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +188,7 @@ class _AllJobViewState extends State<AllJobView> {
           ),
           title: Text(
             'All Jobs',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500,fontSize: 18),
           ),
         ),
         body: Center(
@@ -186,7 +214,7 @@ class _AllJobViewState extends State<AllJobView> {
         ),
         title: Text(
           'All Jobs',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500,fontSize: 18),
         ),
       ),
       body: StreamBuilder(
@@ -224,6 +252,21 @@ class _AllJobViewState extends State<AllJobView> {
                   showTime: jobTime,
                   onTap: () {
                     _confirmJob(
+                      docId,
+                      document['category'],
+                      document['description'],
+                      jobTime,
+                      selectedFormatDate!,
+                      adminDescriptionController.text,
+                      document['device'],
+                      document['location'],
+                      document['name'],
+                      document['user_id'],
+                      document['user_role'],
+                    );
+                  },
+                  deleteTap: (){
+                    _rejectJob(
                       docId,
                       document['category'],
                       document['description'],

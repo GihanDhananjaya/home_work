@@ -57,7 +57,7 @@ class _NewJobViewState extends State<NewJobView> {
         ),
         title: Text(
           'Create Job',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500,fontSize: 18),
         ),
       ),
       body: SingleChildScrollView(
@@ -136,29 +136,29 @@ class _NewJobViewState extends State<NewJobView> {
                 },
               ),
               SizedBox(height: 20),
-              AppMobileNumberField(
-                hint: 'Mobile Number',
-                isRequired: true,
-                focusNode: focusNode,
-                initialCountryCode: phoneNumber != null
-                    ? phoneNumber!.countryCode.replaceAll('+', '')
-                    : null,
-                onChange: (phone) {
-                  setState(() {
-                    if (phone.number.isNotEmpty) {
-                      phoneNumber = phone;
-                    } else {
-                      if (phoneNumber != null) {
-                        phoneNumber!.number = '';
-                      }
-                    }
-                  });
-                },
-                controller: mobileNumberController,
-                onCountryChange: (country) {
-                  focusNode.requestFocus();
-                },
-              ),
+              // AppMobileNumberField(
+              //   hint: 'Mobile Number',
+              //   isRequired: true,
+              //   focusNode: focusNode,
+              //   initialCountryCode: phoneNumber != null
+              //       ? phoneNumber!.countryCode.replaceAll('+', '')
+              //       : null,
+              //   onChange: (phone) {
+              //     setState(() {
+              //       if (phone.number.isNotEmpty) {
+              //         phoneNumber = phone;
+              //       } else {
+              //         if (phoneNumber != null) {
+              //           phoneNumber!.number = '';
+              //         }
+              //       }
+              //     });
+              //   },
+              //   controller: mobileNumberController,
+              //   onCountryChange: (country) {
+              //     focusNode.requestFocus();
+              //   },
+              // ),
               SizedBox(height: 20),
               GestureDetector(
                 onTap: () {

@@ -90,10 +90,7 @@ class AppDropDownField extends StatelessWidget {
             }
             onSelect(data!);
           },
-          dropdownDecoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: AppColors.fontColorWhite,
-          ),
+
           style: TextStyle(
             overflow: TextOverflow.ellipsis,
             fontWeight: FontWeight.w600,
@@ -130,10 +127,6 @@ class AppDropDownField extends StatelessWidget {
               ),
               filled: true,
               fillColor: AppColors.fieldBackgroundColor),
-          icon: const Icon(
-            Icons.arrow_drop_down,
-            color: AppColors.fontColorDark,
-          ),
         ),
       ],
     );

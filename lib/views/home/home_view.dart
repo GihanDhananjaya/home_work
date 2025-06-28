@@ -36,67 +36,64 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
       backgroundColor: AppColors.btnGradient1.withOpacity(0.3),
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.only(top: 20),
-              height: 200,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(colors: [
-                  AppColors.btnGradient1,
-                  AppColors.fontColorDark
-                ])
-              ),
-        
-              child: Row(
-                children: [
-                  Image.asset(AppImages.appHome2Img),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Welcome Gihan,",
-                        style: TextStyle(
-                          overflow: TextOverflow.ellipsis,
-                          fontSize: AppDimensions.kFontSize14,
-                          color: AppColors.fontColorWhite,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      Text(
-                        getTimeOfDayGreeting(),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: AppDimensions.kFontSize18,
-                          color: AppColors.fontColorWhite,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+      body: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.only(top: 20),
+            height: 200,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(colors: [
+                AppColors.btnGradient1,
+                AppColors.fontColorDark
+              ])
             ),
-            ChartComponent(),
-            Container(
+
+            child: Row(
+              children: [
+                Image.asset(AppImages.appHome2Img),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Welcome Gihan,",
+                      style: TextStyle(
+                        overflow: TextOverflow.ellipsis,
+                        fontSize: AppDimensions.kFontSize14,
+                        color: AppColors.fontColorWhite,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    Text(
+                      getTimeOfDayGreeting(),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: AppDimensions.kFontSize18,
+                        color: AppColors.fontColorWhite,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               decoration:  BoxDecoration(
-                //color: AppColors.colorBackground,
                   gradient: LinearGradient(colors: [
                     AppColors.btnGradient1.withOpacity(0.3),
                     AppColors.fontColorDark.withOpacity(0.3)
                   ])
               ),
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
+              child: Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     Text(
                       getFormattedDate(),
                       style: TextStyle(
@@ -116,7 +113,7 @@ class _HomeViewState extends State<HomeView> {
                         Navigator.pushNamed(context, '/all_job_view');
                       },
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 16),
                     HomeComponent(
                       name: 'Create Job',
                       number: 5,
@@ -127,7 +124,7 @@ class _HomeViewState extends State<HomeView> {
                         Navigator.pushNamed(context, '/new_job');
                       },
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 16),
                     Row(
                       children: [
                         Expanded(
@@ -142,7 +139,7 @@ class _HomeViewState extends State<HomeView> {
                             },
                           ),
                         ),
-                        SizedBox(width: 9),
+                        const SizedBox(width: 9),
                         Expanded(
                           child: HomeComponent2(
                             name: 'Rejected Job',
@@ -151,35 +148,29 @@ class _HomeViewState extends State<HomeView> {
                             containerBackGround:
                             AppColors.containerColor6,
                             onTap: () {
-                              // Navigator.pushNamed(
-                              //     context, Routes.kDefListView,
-                              //     arguments: 4);
+                              Navigator.pushNamed(context, '/reject_job_view');
                             },
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 38),
-                    // Container(
-                    //   height: 200,
-                    //   width: double.infinity,
-                    //   child: ListView.builder(
-                    //     padding: EdgeInsets.only(left: 0,top: 8),
-                    //     scrollDirection: Axis.horizontal,
-                    //     itemCount: image.length,
-                    //     shrinkWrap: true,
-                    //     itemBuilder: (context, index) {
-                    //       return ServiceComponent(image: image[index],);
-                    //     },
-                    //   ),
-                    // ),
-        
+                    const SizedBox(height: 38),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
+                      color: AppColors.btnGradient1),
+                      width: double.infinity,
+                      child: Text('Contact us to repair any home appliance in your home. ',style: TextStyle(
+                        fontSize: 15,fontWeight: FontWeight.w500,color: Colors.white
+                      ),),
+                    ),
+
                   ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

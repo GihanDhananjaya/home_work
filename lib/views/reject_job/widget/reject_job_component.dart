@@ -1,53 +1,38 @@
 import 'package:day_night_time_picker/lib/daynight_timepicker.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:home_work/common/app_text_field.dart';
 import 'package:intl/intl.dart';
 
 import '../../../common/app_button.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_dimensions.dart';
-import 'date_and_time_component.dart';
 
-class AllJobComponent extends StatefulWidget {
+class RejectJobComponent extends StatefulWidget {
   final String name;
-  final String? title;
+  final String title;
   final String location;
-  final String? description;
-  final String? mobileNumber;
-  final String? userName;
   final VoidCallback? onTap;
-  final VoidCallback? deleteTap;
-  final VoidCallback? setTime;
-  final String? addedDate;
-  Time? showTime;
-  String? showDate;
-  final VoidCallback? setDate;
-  final TextEditingController? adminDescriptionController;
-  final String? isAdmin;
+  final String? confirmedDate;
+  final Time? time;
+  final String? adminDescription;
+  final String? userName;
 
-  AllJobComponent({required this.name,
-    this.title,
+  RejectJobComponent({
+    required this.name,
+    required this.title,
     required this.location,
-    this.description,
     this.onTap,
-    this.deleteTap,
-    this.setTime,
-    this.setDate,
-    this.addedDate,
-    this.mobileNumber,
-    this.showDate,
-    this.userName,
-    this.showTime,this.adminDescriptionController,
-    this.isAdmin
+    this.time,
+    this.confirmedDate,
+    this.adminDescription,
+    this.userName
   });
 
   @override
-  State<AllJobComponent> createState() => _AllJobComponentState();
+  State<RejectJobComponent> createState() => _RejectJobComponentState();
 }
 
-class _AllJobComponentState extends State<AllJobComponent> {
+class _RejectJobComponentState extends State<RejectJobComponent> {
   Time _time = Time(hour: 11, minute: 30, second: 20);
   bool iosStyle = true;
   DateTime selectedDate = DateTime.now();
@@ -73,6 +58,12 @@ class _AllJobComponentState extends State<AllJobComponent> {
         selectedFormatDate = DateFormat('MMM d, yyyy').format(selectedDate);
       });
     }
+  }
+
+  String formatTime(Time? time) {
+    if (time == null) return 'Time not available';
+    final dateTime = DateTime(0, 1, 1, time.hour, time.minute);
+    return DateFormat.jm().format(dateTime); // Format to include AM/PM
   }
 
   @override
@@ -105,54 +96,28 @@ class _AllJobComponentState extends State<AllJobComponent> {
                     fontSize: AppDimensions.kFontSize14,
                   ),
                 ),
-                widget.isAdmin! == 'admin' ?
-                Column(
-                  children: [
-                    GestureDetector(
-                      onTap: widget.onTap,
-                      child: Container(
-                        width: 65,
-                        height: 21,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          color: AppColors.fontColorSuccess,
-                        ),
-                        child: Center(
-                          child: Text(
-                            'CONFIRM',
-                            style: TextStyle(
-                              fontSize: AppDimensions.kFontSize8,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.colorReviewing,
-                            ),
+                if (widget.onTap != null)
+                  GestureDetector(
+                    onTap: widget.onTap,
+                    child: Container(
+                      width: 65,
+                      height: 21,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        color: AppColors.fontColorSuccess,
+                      ),
+                      child: Center(
+                        child: Text(
+                          'CONFIRM',
+                          style: TextStyle(
+                            fontSize: AppDimensions.kFontSize8,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.colorReviewing,
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(height: 5,),
-                    GestureDetector(
-                      onTap: widget.deleteTap,
-                      child: Container(
-                        width: 65,
-                        height: 21,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          color: AppColors.containerColor13,
-                        ),
-                        child: Center(
-                          child: Text(
-                            'REJECT',
-                            style: TextStyle(
-                              fontSize: AppDimensions.kFontSize8,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.fontColorWhite,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ):SizedBox.shrink(),
+                  ),
               ],
             ),
             SizedBox(height: 10),
@@ -168,7 +133,7 @@ class _AllJobComponentState extends State<AllJobComponent> {
                 ),
                 SizedBox(width: 5),
                 Text(
-                  widget.description!,
+                  widget.adminDescription!,
                   style: TextStyle(
                     fontSize: AppDimensions.kFontSize10,
                     fontWeight: FontWeight.w500,
@@ -193,7 +158,7 @@ class _AllJobComponentState extends State<AllJobComponent> {
                         ),
                         SizedBox(width: 4),
                         Text(
-                          "Job Added :",
+                          "Rejected :",
                           style: TextStyle(
                             fontSize: AppDimensions.kFontSize10,
                             fontWeight: FontWeight.w400,
@@ -202,7 +167,35 @@ class _AllJobComponentState extends State<AllJobComponent> {
                         ),
                         SizedBox(width: 2),
                         Text(
-                          widget.addedDate!,
+                          widget.confirmedDate ?? 'Date not available',
+                          style: TextStyle(
+                            fontSize: AppDimensions.kFontSize10,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.fontColorDark,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 4),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.access_time,
+                          color: AppColors.fontColorGray,
+                          size: 14,
+                        ),
+                        SizedBox(width: 4),
+                        Text(
+                          "Time :",
+                          style: TextStyle(
+                            fontSize: AppDimensions.kFontSize10,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.fontColorGray,
+                          ),
+                        ),
+                        SizedBox(width: 2),
+                        Text(
+                          formatTime(widget.time), // Use the formatTime method
                           style: TextStyle(
                             fontSize: AppDimensions.kFontSize10,
                             fontWeight: FontWeight.w600,
@@ -221,7 +214,7 @@ class _AllJobComponentState extends State<AllJobComponent> {
                         ),
                         SizedBox(width: 4),
                         Text(
-                          "Location:",
+                          "Location :",
                           style: TextStyle(
                             fontSize: AppDimensions.kFontSize10,
                             fontWeight: FontWeight.w400,
@@ -243,13 +236,13 @@ class _AllJobComponentState extends State<AllJobComponent> {
                     Row(
                       children: [
                         Icon(
-                          Icons.perm_identity,
+                          Icons.supervisor_account_sharp,
                           color: AppColors.fontColorGray,
                           size: 14,
                         ),
                         SizedBox(width: 4),
                         Text(
-                          "User_Name :",
+                          'User Name',
                           style: TextStyle(
                             fontSize: AppDimensions.kFontSize10,
                             fontWeight: FontWeight.w400,
@@ -258,35 +251,7 @@ class _AllJobComponentState extends State<AllJobComponent> {
                         ),
                         SizedBox(width: 2),
                         Text(
-                          widget.userName!,
-                          style: TextStyle(
-                            fontSize: AppDimensions.kFontSize10,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.fontColorDark,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 4),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.call,
-                          color: AppColors.fontColorGray,
-                          size: 14,
-                        ),
-                        SizedBox(width: 4),
-                        Text(
-                          "Mobile_Number :",
-                          style: TextStyle(
-                            fontSize: AppDimensions.kFontSize10,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.fontColorGray,
-                          ),
-                        ),
-                        SizedBox(width: 2),
-                        Text(
-                          widget.mobileNumber!,
+                          widget.userName!, // Use the formatTime method
                           style: TextStyle(
                             fontSize: AppDimensions.kFontSize10,
                             fontWeight: FontWeight.w600,
@@ -327,43 +292,6 @@ class _AllJobComponentState extends State<AllJobComponent> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
-
-            ///Admin Part
-
-            widget.isAdmin! == 'admin' ?
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  children: [
-                    GestureDetector(
-                        onTap: widget.setTime,
-                        child: DateAndTimeComponent(icon: Icons.timelapse, name: 'Set  Time',)),
-                    SizedBox(height: 10,),
-                    Text("${widget.showTime!}")
-                  ],
-                ),
-                Column(
-                  children: [
-                    GestureDetector(
-                        onTap: widget.setDate,
-                        child: DateAndTimeComponent(icon: Icons.date_range, name: 'Set  Date',)),
-                    SizedBox(height: 10,),
-                    Text(
-                      widget.showDate != null
-                          ? widget.showDate!
-                          : 'No date selected',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ],
-                ),
-              ],
-            ):SizedBox.shrink(),
-            widget.isAdmin! == 'admin'?
-            SizedBox(height: 20):SizedBox.shrink(),
-            widget.isAdmin! == 'admin'?
-            AppTextField(hint: 'Admin Description',controller: widget.adminDescriptionController,):SizedBox.shrink()
           ],
         ),
       ),

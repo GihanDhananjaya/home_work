@@ -75,7 +75,8 @@ class _SignUpViewState extends State<SignUpView> {
                   ),
                   SizedBox(height: 24),
                   AppMobileNumberField(
-                    hint: 'Mobile Number',
+                    appMobileNumberController: null,
+                    title: 'Mobile Number',
                     focusNode: focusNode,
                     initialCountryCode: phoneNumber != null
                         ? phoneNumber!.countryCode
