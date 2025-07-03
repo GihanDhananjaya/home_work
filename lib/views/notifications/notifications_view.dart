@@ -1,48 +1,22 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../utils/app_colors.dart';
+import '../../utils/app_images.dart';
 
-class NotificationsView extends StatefulWidget {
-  const NotificationsView({super.key});
+class ContactServiceCenterView extends StatefulWidget {
+  const ContactServiceCenterView({super.key});
 
   @override
-  State<NotificationsView> createState() => _NotificationsViewState();
+  State<ContactServiceCenterView> createState() =>
+      _ContactServiceCenterViewState();
 }
 
-class _NotificationsViewState extends State<NotificationsView> {
-
+class _ContactServiceCenterViewState extends State<ContactServiceCenterView> {
   String? _token;
 
   void initState() {
-
     super.initState();
-  }
-
-  void _initializeFCM() async {
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-    // Get the FCM token for this device
-    _token = await messaging.getToken();
-    print("FCM Token: $_token");
-
-    // Configure foreground notification
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Received a message while in the foreground!');
-      print('Message data: ${message.data}');
-
-      if (message.notification != null) {
-        print('Message also contained a notification: ${message.notification}');
-      }
-    });
-
-    // Handle notification when the app is opened from a terminated state
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('A new onMessageOpenedApp event was published!');
-      // Handle the notification tap
-    });
   }
 
   @override
@@ -61,32 +35,109 @@ class _NotificationsViewState extends State<NotificationsView> {
         ),
         title: Center(
           child: Text(
-            'Notifications',
-            style: TextStyle(color: Colors.white),
+            'Contact Service Center',
+            style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.w500, fontSize: 18),
           ),
         ),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child:  Column(
           children: [
-            Text('Welcome to FCM Demo!'),
-            if (_token != null) ...[
-              SizedBox(height: 20),
-              Text('FCM Token:'),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  _token!,
-                  textAlign: TextAlign.center,
+            SizedBox(height: 10,),
+            Container(
+              height: 200,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.asset(
+                  AppImages.appProfileIcon,
+                  height: 180,
+                  width: 180,
+                  fit: BoxFit.cover,
                 ),
               ),
-            ],
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Mr. Home Worker',
+              style: TextStyle(color: Colors.black, fontSize: 22, fontWeight: FontWeight.bold),
+            ),
+            const Text(
+              'Service Center',
+              style: TextStyle(color: Colors.black),
+            ),
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkResponse(
+                      onTap:(){
+                        _makePhoneCall('0712345678');
+                      },
+                      child: _buildInfoCard('400+', 'Call Now', Icons.call)),
+                  _buildInfoCard('4 Yr+', 'Experience', Icons.medical_services),
+                  _buildInfoCard('4.4', 'Rating', Icons.star),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                "Gentle and expert dental care for children, ensuring healthy teeth, bright smiles, and a comfortable experience every visit...",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+
+            const SizedBox(height: 20),
+            SizedBox(
+              height: 50,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: 7,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                itemBuilder: (context, index) {
+                  List<String> days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Chip(
+                      label: Text(days[index]),
+                      backgroundColor: Colors.grey[850],
+                      labelStyle: TextStyle(color: Colors.black),
+                    ),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
+  Widget _buildInfoCard(String value, String label, IconData icon) {
+    return Column(
+      children: [
+        Icon(icon, color: Colors.black, size: 28),
+        const SizedBox(height: 4),
+        Text(value, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+        Text(label, style: TextStyle(color: Colors.black, fontSize: 12)),
+      ],
+    );
+  }
+
+  void _makePhoneCall(String phoneNumber) async {
+    final Uri phoneUri = Uri(scheme: 'tel', path: phoneNumber);
+    if (await canLaunchUrl(phoneUri)) {
+      await launchUrl(phoneUri);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Could not launch phone dialer')),
+      );
+    }
+  }
 
 }

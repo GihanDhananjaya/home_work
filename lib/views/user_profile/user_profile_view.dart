@@ -85,7 +85,7 @@ class _UserProfileState extends State<UserProfile> {
         title: Center(
           child: Text(
             'User Profile',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500,fontSize: 18),
           ),
         ),
       ),
@@ -133,31 +133,33 @@ class _UserProfileState extends State<UserProfile> {
               ProfileComponent(
                 hint: 'Name',
                 value: userName ?? '',
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, '/edit_profile_details_view',arguments: userName);
+                },
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               ProfileComponent(
                 hint: 'Email Address',
                 value: userEmail ?? '',
                 onTap: () {},
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               // ProfileComponent(
               //   hint: 'Mobile Number',
               //   value: userMobileNumber ?? '',
               //   onTap: () {},
               // ),
-              SizedBox(height: 12),
+              const SizedBox(height: 12),
               InkWell(
                 onTap: () {},
                 child: Container(
                   padding: EdgeInsets.symmetric(
-                    vertical: 20,
+                    vertical: 15,
                     horizontal: 8,
                   ),
                   decoration: BoxDecoration(
                     color: AppColors.fontColorWhite,
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: AppColors.fontColorGray,
                       width: 0.75,

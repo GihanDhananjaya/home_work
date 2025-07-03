@@ -66,4 +66,9 @@ class AppImages {
   static const String appJob3 = 'images/png/app_job3.png';
   static const String appJob4 = 'images/png/app_job4.png';
   static const String appLogo5 = 'images/png/app_logo5.png';
+
+  static const String appHomeIcon = 'images/png/app_home_icon.png';
+  static const String appTelephoneIcon = 'images/png/app_telephone_icon.png';
+  static const String appCommentIcon = 'images/png/app_comment_icon.png';
+  static const String appProfileIcon = 'images/png/app_profile_icon.png';
 }

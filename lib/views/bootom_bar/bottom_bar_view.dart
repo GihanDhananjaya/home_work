@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:home_work/views/bootom_bar/widget/bottom_bar_item_component.dart';
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_images.dart';
+import '../community/community_view.dart';
 import '../home/home_view.dart';
 import '../notifications/notifications_view.dart';
 import '../user_profile/user_profile_view.dart';
@@ -91,7 +92,7 @@ class _BottomBarViewState extends State<BottomBarView> {
             children: [
               BottomBarItem(
                 name: 'HOME',
-                icon: AppImages.appHome1,
+                icon: AppImages.appHomeIcon,
                 onTap: () {
                   if (_selectedPage != 0) {
                     setState(() {
@@ -102,7 +103,7 @@ class _BottomBarViewState extends State<BottomBarView> {
               ),
               BottomBarItem(
                 name: 'Community',
-                icon: AppImages.appAssigner,
+                icon: AppImages.appCommentIcon,
                 onTap: () {
                   if (_selectedPage != 1) {
                     setState(() {
@@ -135,7 +136,7 @@ class _BottomBarViewState extends State<BottomBarView> {
               ),
               BottomBarItem(
                 name: 'Contact_Admin',
-                icon: AppImages.appNotification,
+                icon: AppImages.appTelephoneIcon,
                 onTap: () {
                   if (_selectedPage != 2) {
                     setState(() {
@@ -146,7 +147,7 @@ class _BottomBarViewState extends State<BottomBarView> {
               ),
               BottomBarItem(
                 name: 'Profile',
-                icon: AppImages.icUser,
+                icon: AppImages.appProfileIcon,
                 onTap: () {
                     if (_selectedPage != 3) {
                       setState(() {
@@ -187,9 +188,9 @@ class _BottomBarViewState extends State<BottomBarView> {
       case 0:
         return HomeView();
       case 1:
-        return HomeView();
+        return CommunityView();
       case 2:
-        return NotificationsView();
+        return ContactServiceCenterView();
       default:
         return UserProfile();
     }

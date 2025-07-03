@@ -46,7 +46,7 @@ class _ProfileComponentState extends State<ProfileComponent> {
             padding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
             decoration: BoxDecoration(
               border: Border.all(color: AppColors.fontLabelGray,width: 1.5),
-              borderRadius: BorderRadius.all(Radius.circular(5)),
+              borderRadius: BorderRadius.all(Radius.circular(12)),
               color: AppColors.fieldBackgroundColor,
             ),
             child: Row(

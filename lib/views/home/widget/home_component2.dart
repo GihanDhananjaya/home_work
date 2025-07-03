@@ -7,7 +7,8 @@ import '../../../../../utils/app_dimensions.dart';
 
 class HomeComponent2 extends StatelessWidget {
   String name;
-  int number;
+  double number;
+  double presentValue;
   String image;
   Color containerBackGround;
   VoidCallback onTap;
@@ -16,6 +17,7 @@ class HomeComponent2 extends StatelessWidget {
       {required this.name,
       required this.number,
       required this.image,
+      required this.presentValue,
       required this.containerBackGround,
       required this.onTap});
 
@@ -71,9 +73,9 @@ class HomeComponent2 extends StatelessWidget {
                     radius: 25.0,
                     lineWidth: 6.16,
                     animation: true,
-                    percent: 0.7,
+                    percent: number,
                     circularStrokeCap: CircularStrokeCap.round,
-                    center: new Text("100%",style: TextStyle(
+                    center: Text("${presentValue}%",style: TextStyle(
                         fontWeight: FontWeight.w700,
                         color: AppColors.fontColorWhite,fontSize: AppDimensions.kFontSize10),),
                   ),

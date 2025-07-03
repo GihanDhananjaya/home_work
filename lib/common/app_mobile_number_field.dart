@@ -39,49 +39,7 @@ class AppMobileNumberField extends StatefulWidget {
 
 class _AppMobileNumberFieldState extends State<AppMobileNumberField> {
   var _countryCode = const CountryCode(name: 'SL', code: 'SL', dialCode: '+94');
-  double borderRadius = 40;
-
-  final countryPickerWithParams = const FlCountryCodePicker(
-      localize: true,
-      showDialCode: true,
-      showSearchBar: true,
-      title: Padding(
-        padding: EdgeInsets.all(15.0),
-        child: Text(
-          'Select your country',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-        ),
-      ),
-      searchBarDecoration: InputDecoration(
-          contentPadding: EdgeInsets.all(16),
-          isDense: true,
-          counterText: "",
-          hintText: 'Enter country name',
-          enabledBorder: OutlineInputBorder(
-            borderSide:
-            BorderSide(color: AppColors.colorDisableWidget, width: 1.0),
-            borderRadius: BorderRadius.all(
-              Radius.circular(5),
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: AppColors.colorPrimary, width: 1.0),
-            borderRadius: BorderRadius.all(
-              Radius.circular(5),
-            ),
-          ),
-          border: OutlineInputBorder(
-            borderSide:
-            BorderSide(color: AppColors.colorDisableWidget, width: 1.0),
-            borderRadius: BorderRadius.all(
-              Radius.circular(5),
-            ),
-          ),
-          prefixIconConstraints: BoxConstraints(
-            minWidth: 55,
-          ),
-          filled: true,
-          fillColor: Colors.white));
+  double borderRadius = 8;
 
   getDialCode(String countryCode) {
     Country country = countries
@@ -114,96 +72,76 @@ class _AppMobileNumberFieldState extends State<AppMobileNumberField> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(
-          height: 2,
-        ),
-        Container(
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.btnGradient1.withOpacity(0.15),
-                spreadRadius: 2,
-                blurRadius: 30,
-                offset: const Offset(0, 2),
-              ),
-            ],
+    return TextField(
+      onChanged: (number) {
+        widget.onChange(
+          PhoneNumber(
+            countryISOCode: _countryCode.code,
+            countryCode: '+${_countryCode.dialCode.replaceAll('+', '')}',
+            number: widget.controller.text,
           ),
-          child: TextField(
-            onChanged: (number) {
-              widget.onChange(
-                PhoneNumber(
-                  countryISOCode: _countryCode.code,
-                  countryCode: '+${_countryCode.dialCode.replaceAll('+', '')}',
-                  number: widget.controller.text,
-                ),
-              );
-            },
-            focusNode: widget.focusNode,
-            controller: widget.controller,
-            maxLength: 9,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            textInputAction: TextInputAction.done,
-            style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: AppDimensions.kFontSize24,
-              color: AppColors.appColorAccent,
+        );
+      },
+      focusNode: widget.focusNode,
+      controller: widget.controller,
+      maxLength: 97,
+      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+      textInputAction: TextInputAction.done,
+      style: TextStyle(
+        fontWeight: FontWeight.w500,
+        fontSize: AppDimensions.kFontSize16,
+        color: AppColors.fontColorDark,
+      ),
+      keyboardType: TextInputType.phone,
+      decoration: InputDecoration(
+          contentPadding: const EdgeInsets.all(12),
+          isDense: true,
+          counterText: "",
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+                color: AppColors.colorDisableWidget, width: 1.0),
+            borderRadius: BorderRadius.all(
+              Radius.circular(borderRadius),
             ),
-            keyboardType: TextInputType.phone,
-            decoration: InputDecoration(
-                contentPadding: const EdgeInsets.all(16),
-                isDense: true,
-                counterText: "",
-                enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                      color: AppColors.colorDisableWidget, width: 1.0),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(borderRadius),
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                      color: AppColors.colorDisableWidget, width: 1.0),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(borderRadius),
-                  ),
-                ),
-                border: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                      color: AppColors.colorDisableWidget, width: 1.0),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(borderRadius),
-                  ),
-                ),
-                prefixIconConstraints: const BoxConstraints(
-                  minWidth: 55,
-                ),
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 10),
-                  child: Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        '+${_countryCode.dialCode.replaceAll('+', '')}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: AppDimensions.kFontSize24,
-                          color: AppColors.appColorAccent,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                filled: true,
-                hintStyle: TextStyle(
-                    color: AppColors.colorDisableWidget,
-                    fontSize: AppDimensions.kFontSize24),
-                fillColor: AppColors.colorReviewing),
           ),
-        )
-      ],
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+                color: AppColors.colorDisableWidget, width: 1.0),
+            borderRadius: BorderRadius.all(
+              Radius.circular(borderRadius),
+            ),
+          ),
+          border: OutlineInputBorder(
+            borderSide: const BorderSide(
+                color: AppColors.colorDisableWidget, width: 1.0),
+            borderRadius: BorderRadius.all(
+              Radius.circular(borderRadius),
+            ),
+          ),
+          prefixIconConstraints: const BoxConstraints(
+            minWidth: 15,
+          ),
+          prefixIcon: Padding(
+            padding: const EdgeInsets.only(left: 15, right: 10),
+            child: Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: <Widget>[
+                Text(
+                  '+${_countryCode.dialCode.replaceAll('+', '')}',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: AppDimensions.kFontSize18,
+                    color: AppColors.appColorAccent,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          filled: true,
+          hintStyle: TextStyle(
+              color: AppColors.colorDisableWidget,
+              fontSize: AppDimensions.kFontSize12,fontWeight: FontWeight.w500),
+          fillColor: AppColors.fontColorWhite),
     );
   }
 }

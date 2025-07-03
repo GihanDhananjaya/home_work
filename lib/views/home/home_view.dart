@@ -1,16 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:home_work/views/home/widget/chart_component.dart';
 import 'package:home_work/views/home/widget/home_component.dart';
 import 'package:home_work/views/home/widget/home_component2.dart';
-import 'package:home_work/views/home/widget/service_component.dart';
 import 'package:intl/intl.dart';
-
 import '../../utils/app_colors.dart';
 import '../../utils/app_dimensions.dart';
 import '../../utils/app_images.dart';
-import '../new_job/new_job_view.dart';
 
 class HomeView extends StatefulWidget {
   final User? user;
@@ -24,6 +20,10 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
 
+  double _totalJobs = 0;
+  double _confirmedJobs = 0;
+  double _rejectedJobs = 0;
+
   final List<String> image =[
     AppImages.appHome5,
     AppImages.appHome6,
@@ -31,6 +31,42 @@ class _HomeViewState extends State<HomeView> {
     AppImages.appHome8,
   ];
 
+
+  Future<void> fetchJobCounts() async {
+    final jobsCollection = FirebaseFirestore.instance.collection('job');
+    final confirmCollection = FirebaseFirestore.instance.collection('confirm_job');
+    final rejectCollection = FirebaseFirestore.instance.collection('reject_job');
+
+    final allJobsSnapshot = await jobsCollection.get();
+    final confirmJobsSnapshot = await confirmCollection.get();
+    final rejectJobsSnapshot = await rejectCollection.get();
+
+    double totalJobs = allJobsSnapshot.size.toDouble();
+    double confirmedJobs = confirmJobsSnapshot.size.toDouble();
+    double rejectedJobs = rejectJobsSnapshot.size.toDouble();
+
+    print('🔥 total: $totalJobs | confirm: $confirmedJobs | reject: $rejectedJobs');
+
+    setState(() {
+      _totalJobs = totalJobs;
+      _confirmedJobs = confirmedJobs;
+      _rejectedJobs = rejectedJobs;
+    });
+  }
+
+  double getProgress(double count) {
+    if (_totalJobs == 0) return 0.0;
+    double progress = count / 109;
+    return progress.clamp(0.0, 1.0);
+  }
+
+
+
+  @override
+  void initState() {
+    fetchJobCounts();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +93,7 @@ class _HomeViewState extends State<HomeView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Welcome Gihan,",
+                      "Welcome ${widget.user?.displayName ?? 'User'},",
                       style: TextStyle(
                         overflow: TextOverflow.ellipsis,
                         fontSize: AppDimensions.kFontSize14,
@@ -89,84 +125,81 @@ class _HomeViewState extends State<HomeView> {
                     AppColors.fontColorDark.withOpacity(0.3)
                   ])
               ),
-              child: Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 20),
-                    Text(
-                      getFormattedDate(),
-                      style: TextStyle(
-                        fontSize: AppDimensions.kFontSize12,
-                        color: AppColors.fontColorSuccess,
-                        fontWeight: FontWeight.w500,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20),
+                  Text(
+                    getFormattedDate(),
+                    style: TextStyle(
+                      fontSize: AppDimensions.kFontSize12,
+                      color: AppColors.fontColorSuccess,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  HomeComponent(
+                    name: 'All Job',
+                    image: AppImages.appJob1,
+                    containerBackGround:
+                    AppColors.colorHover,
+                    onTap: () {
+                      Navigator.pushNamed(context, '/all_job_view');
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  HomeComponent(
+                    name: 'Create Job',
+                    image: AppImages.appJob2,
+                    containerBackGround:
+                    AppColors.containerColor1,
+                    onTap: () {
+                      Navigator.pushNamed(context, '/new_job');
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: HomeComponent2(
+                          name: 'Confirm Job',
+                          number: getProgress(_confirmedJobs),
+                          image: AppImages.appJob3,
+                          containerBackGround:
+                          AppColors.containerColor2,
+                          onTap: () {
+                            Navigator.pushNamed(context, '/confirm_job_view');
+                          },
+                          presentValue: _confirmedJobs,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 16),
-                    HomeComponent(
-                      name: 'All Job',
-                      number: 5,
-                      image: AppImages.appJob1,
-                      containerBackGround:
-                      AppColors.colorHover,
-                      onTap: () {
-                        Navigator.pushNamed(context, '/all_job_view');
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    HomeComponent(
-                      name: 'Create Job',
-                      number: 5,
-                      image: AppImages.appJob2,
-                      containerBackGround:
-                      AppColors.containerColor1,
-                      onTap: () {
-                        Navigator.pushNamed(context, '/new_job');
-                      },
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: HomeComponent2(
-                            name: 'Confirm Job',
-                            number: 5,
-                            image: AppImages.appJob3,
-                            containerBackGround:
-                            AppColors.containerColor2,
-                            onTap: () {
-                              Navigator.pushNamed(context, '/confirm_job_view');
-                            },
-                          ),
+                      const SizedBox(width: 9),
+                      Expanded(
+                        child: HomeComponent2(
+                          name: 'Rejected Job',
+                          number: getProgress(_rejectedJobs),
+                          image: AppImages.appJob4,
+                          containerBackGround:
+                          AppColors.containerColor6,
+                          onTap: () {
+                            Navigator.pushNamed(context, '/reject_job_view');
+                          }, presentValue: _rejectedJobs,
                         ),
-                        const SizedBox(width: 9),
-                        Expanded(
-                          child: HomeComponent2(
-                            name: 'Rejected Job',
-                            number: 5,
-                            image: AppImages.appJob4,
-                            containerBackGround:
-                            AppColors.containerColor6,
-                            onTap: () {
-                              Navigator.pushNamed(context, '/reject_job_view');
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 38),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
-                      color: AppColors.btnGradient1),
-                      width: double.infinity,
-                      child: Text('Contact us to repair any home appliance in your home. ',style: TextStyle(
-                        fontSize: 15,fontWeight: FontWeight.w500,color: Colors.white
-                      ),),
-                    ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 38),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
+                    color: AppColors.btnGradient1),
+                    width: double.infinity,
+                    child: Text('Contact us to repair any home appliance in your home. ',style: TextStyle(
+                      fontSize: 15,fontWeight: FontWeight.w500,color: Colors.white
+                    ),),
+                  ),
 
-                  ],
-                ),
+                ],
               ),
             ),
           ),

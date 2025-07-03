@@ -10,14 +10,12 @@ import '../../../utils/app_colors.dart';
 
 class HomeComponent extends StatelessWidget {
   String name;
-  int number;
   String image;
   Color containerBackGround;
   VoidCallback onTap;
 
   HomeComponent(
       {required this.name,
-      required this.number,
       required this.image,
       required this.containerBackGround,
       required this.onTap});
@@ -65,22 +63,6 @@ class HomeComponent extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                 ),
               ),
-            ),
-            SizedBox(width: 10),
-            CircularPercentIndicator(
-              backgroundColor: AppColors.colorDisableWidgetWeb,
-              linearGradient: LinearGradient(colors: [
-                AppColors.containerColor10,
-                AppColors.containerColor12
-              ]),
-              radius: 25.0,
-              lineWidth: 6.16,
-              animation: true,
-              percent: 0.7,
-              circularStrokeCap: CircularStrokeCap.round,
-              center: new Text("100%",style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.fontColorWhite,fontSize: AppDimensions.kFontSize10),),
             ),
           ],
         ),

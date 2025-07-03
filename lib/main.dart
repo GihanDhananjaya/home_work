@@ -10,6 +10,7 @@ import 'package:home_work/views/bootom_bar/bottom_bar_view.dart';
 import 'package:home_work/views/confirm_job/confirm_job_view.dart';
 import 'package:home_work/views/new_job/new_job_view.dart';
 import 'package:home_work/views/reject_job/reject_job_view.dart';
+import 'package:home_work/views/user_profile/edit_profile_details_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:home_work/views/home/home_view.dart';
 import 'package:home_work/views/sign_in/sign_in_view.dart';
@@ -75,6 +76,7 @@ class _MyAppState extends State<MyApp> {
         '/all_job_view': (context) => AllJobView(),
         '/confirm_job_view': (context) => ConfirmJobView(),
         '/reject_job_view': (context) => RejectJobView(),
+        '/edit_profile_details_view': (context) => EditProfileDetails(userName: '',),
       },
     );
   }
