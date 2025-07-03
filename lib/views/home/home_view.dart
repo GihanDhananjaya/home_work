@@ -101,6 +101,7 @@ class _HomeViewState extends State<HomeView> {
                         fontWeight: FontWeight.w400,
                       ),
                     ),
+
                     Text(
                       getTimeOfDayGreeting(),
                       maxLines: 1,
