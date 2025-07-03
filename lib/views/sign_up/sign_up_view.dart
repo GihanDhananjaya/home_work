@@ -33,26 +33,17 @@ class _SignUpViewState extends State<SignUpView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.containerColor7,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 23.0),
-          child: Column(
-            children: [
-              SizedBox(height: 40),
-              Text(
-                "Job Tasker",
-                style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  color: AppColors.colorPrimary,
-                  fontSize: AppDimensions.kFontSize18,
-                ),
-              ),
-              Image.asset(AppImages.appLogo5, height: 220,),
-              SizedBox(height: 22),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+      body: Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 23.0),
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              child: Column(
                 children: [
-                  SizedBox(height: 42),
+
+                  Image.asset(AppImages.appLogo5, height: 220,),
+                  SizedBox(height: 22),
                   Text(
                     "Welcome to the Job Tasker",
                     style: TextStyle(
@@ -121,9 +112,33 @@ class _SignUpViewState extends State<SignUpView> {
                   SizedBox(height: 30),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
+          GestureDetector(
+            onTap: (){
+              Navigator.pushNamed(context, '/sign_in');
+            },
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 20.0),
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Text(
+                  'Already have an account? SignIn',
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                    fontSize: AppDimensions.kFontSize12,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.fontColorGray,
+                    decoration:
+                    TextDecoration.underline,
+                    decorationColor:
+                    AppColors.colorReviewing,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

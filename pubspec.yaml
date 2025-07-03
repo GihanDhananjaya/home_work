@@ -65,6 +65,7 @@ dependencies:
   google_fonts: 6.2.1
   flutter_screenutil: ^5.9.3
   flutter_bloc: ^9.0.0
+  carousel_slider: ^5.1.1
 
 
 

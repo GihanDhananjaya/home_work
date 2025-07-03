@@ -70,7 +70,7 @@ class _MyAppState extends State<MyApp> {
       routes: {
         '/': (context) =>isUserLoggedIn(widget.prefs, widget.user) ?
         BottomBarView(user: widget.user): SignInView(prefs: widget.prefs),
-        '/details': (context) => SignInView(),
+        '/sign_in': (context) => SignInView(),
         '/signup': (context) => SignUpView(),
         '/home': (context) => HomeView(),
         '/new_job': (context) => NewJobView(),

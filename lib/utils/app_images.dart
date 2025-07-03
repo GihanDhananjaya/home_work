@@ -71,4 +71,5 @@ class AppImages {
   static const String appTelephoneIcon = 'images/png/app_telephone_icon.png';
   static const String appCommentIcon = 'images/png/app_comment_icon.png';
   static const String appProfileIcon = 'images/png/app_profile_icon.png';
+  static const String appWork = 'images/png/work.png';
 }

@@ -28,6 +28,10 @@ class _SignInViewState extends State<SignInView> {
   bool _isLogging = false;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  @override
+  void initState() {
+    super.initState();
+  }
 
   Future<void> loginUser() async {
     setState(() {
@@ -72,93 +76,97 @@ class _SignInViewState extends State<SignInView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.containerColor7,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 40),
-            Text("Job Tasker",
-                style: TextStyle(
-                    fontWeight: FontWeight.w900,
-                    color: AppColors.fontColorDark,
-                    fontSize: AppDimensions.kFontSize18)),
-            SizedBox(height: 42),
-            Image.asset(AppImages.appLogo5, height: 220,),
-            SizedBox(height: 42),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 23),
+      body: Stack(
+        children: [
+          Center(
+            child: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Log in to continue",
+                  SizedBox(height: 40),
+                  Text("Job Tasker",
                       style: TextStyle(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w900,
                           color: AppColors.fontColorDark,
-                          fontSize: AppDimensions.kFontSize15)),
-                  SizedBox(height: 24),
-                  AppTextField(
-                    hint: "E-mail",
-                    icon: Icon(Icons.email_outlined),
-                    controller: emailController,
-                  ),
-                  SizedBox(height: 32),
-                  AppPasswordField(
-                    hint: "Password",
-                    controller: passwordController,
-                    icon: Icon(Icons.lock_open),
-                  ),
-                  SizedBox(height: 24),
-                  InkWell(
-                    onTap: () {
-                      // Navigator.pushNamed(context, Routes.kResetPasswordView);
-                    },
-                    child: Text("Forget password?",
-                        style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.colorIconOuter,
-                            fontSize: AppDimensions.kFontSize14)),
-                  ),
-                  SizedBox(height: 12),
-                  RichText(
-                    text: TextSpan(
-                        text: "Don't have an account? ",
-                        style: TextStyle(
-                          fontSize: AppDimensions.kFontSize16,
-                          color: AppColors.colorIconOuter,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: 'Register',
+                          fontSize: AppDimensions.kFontSize18)),
+                  SizedBox(height: 42),
+                  Image.asset(AppImages.appLogo5, height: 220,),
+                  SizedBox(height: 42),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 23),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Log in to continue",
                             style: TextStyle(
-                              color: AppColors.colorIconOuter,
-                              fontWeight: FontWeight.w600,
-                              fontSize: AppDimensions.kFontSize16,
-                              decoration: TextDecoration.underline,
-                              decorationColor: AppColors.fontColorDark,
-                            ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Navigator.pushNamed(context, '/signup');
-                              },
-                          )
-                        ]),
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.fontColorDark,
+                                fontSize: AppDimensions.kFontSize15)),
+                        SizedBox(height: 24),
+                        AppTextField(
+                          hint: "E-mail",
+                          icon: Icon(Icons.email_outlined),
+                          controller: emailController,
+                        ),
+                        SizedBox(height: 32),
+                        AppPasswordField(
+                          hint: "Password",
+                          controller: passwordController,
+                          icon: Icon(Icons.lock_open),
+                        ),
+                        SizedBox(height: 24),
+                        InkWell(
+                          onTap: () {
+                            // Navigator.pushNamed(context, Routes.kResetPasswordView);
+                          },
+                          child: Text("Forget password?",
+                              style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.colorIconOuter,
+                                  fontSize: AppDimensions.kFontSize14)),
+                        ),
+                        SizedBox(height: 100),
+                        AppButton(
+                          buttonText: "Login",
+                          onTapButton: () async {
+                            if (_fieldValidation()) {
+                              await loginUser();
+                            }
+                          },
+                        ),
+                        SizedBox(height: 30),
+                      ],
+                    ),
                   ),
-                  SizedBox(height: 100),
-                  AppButton(
-                    buttonText: "Login",
-                    onTapButton: () async {
-                      if (_fieldValidation()) {
-                        await loginUser();
-                      }
-                    },
-                  ),
-                  SizedBox(height: 30),
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+          GestureDetector(
+            onTap: (){
+              Navigator.pushNamed(context, '/signup');
+            },
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 20.0),
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Text(
+                  'Already have an account? SignUp',
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                    fontSize: AppDimensions.kFontSize12,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.fontColorGray,
+                    decoration:
+                    TextDecoration.underline,
+                    decorationColor:
+                    AppColors.colorReviewing,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

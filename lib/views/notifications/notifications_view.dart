@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -14,6 +15,12 @@ class ContactServiceCenterView extends StatefulWidget {
 
 class _ContactServiceCenterViewState extends State<ContactServiceCenterView> {
   String? _token;
+
+  final List<String> images = [
+    AppImages.appHome5,
+    AppImages.appHome6,
+    AppImages.appHome7,
+  ];
 
   void initState() {
     super.initState();
@@ -76,9 +83,9 @@ class _ContactServiceCenterViewState extends State<ContactServiceCenterView> {
                       onTap:(){
                         _makePhoneCall('0712345678');
                       },
-                      child: _buildInfoCard('400+', 'Call Now', Icons.call)),
-                  _buildInfoCard('4 Yr+', 'Experience', Icons.medical_services),
-                  _buildInfoCard('4.4', 'Rating', Icons.star),
+                      child: _buildInfoCard('400+', 'Call Now', Icons.call,Colors.green)),
+                  _buildInfoCard('4 Yr+', 'Experience', Icons.work_history,Colors.blueAccent),
+                  _buildInfoCard('4.4', 'Rating', Icons.star,Colors.orange),
                 ],
               ),
             ),
@@ -88,40 +95,60 @@ class _ContactServiceCenterViewState extends State<ContactServiceCenterView> {
               child: Text(
                 "Gentle and expert dental care for children, ensuring healthy teeth, bright smiles, and a comfortable experience every visit...",
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: Colors.black,fontWeight: FontWeight.w500),
               ),
             ),
 
             const SizedBox(height: 20),
-            SizedBox(
-              height: 50,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: 7,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                itemBuilder: (context, index) {
-                  List<String> days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Chip(
-                      label: Text(days[index]),
-                      backgroundColor: Colors.grey[850],
-                      labelStyle: TextStyle(color: Colors.black),
-                    ),
-                  );
-                },
-              ),
+            const Text(
+              'Our Service Category',
+              style: TextStyle(color: Colors.black54,fontWeight:FontWeight.w700),
             ),
+            const SizedBox(height: 20),
+            // SizedBox(
+            //   height: 50,
+            //   child: ListView.builder(
+            //     scrollDirection: Axis.horizontal,
+            //     itemCount: 7,
+            //     padding: const EdgeInsets.symmetric(horizontal: 16),
+            //     itemBuilder: (context, index) {
+            //       List<String> days = ['Fan', 'Washing Machine', 'Gas conker', 'Fridge', 'Blender', 'TV', 'Radio'];
+            //       return Padding(
+            //         padding: const EdgeInsets.symmetric(horizontal: 8),
+            //         child: Chip(
+            //           label: Text(days[index]),
+            //           backgroundColor: Colors.grey[850],
+            //           labelStyle: TextStyle(color: Colors.grey),
+            //         ),
+            //       );
+            //     },
+            //   ),
+            // ),
+            CarouselSlider(
+              items: images.map((imagePath) {
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset(imagePath, fit: BoxFit.cover, width: double.infinity),
+                );
+              }).toList(),
+              options: CarouselOptions(
+                height: 150,
+                autoPlay: true,
+                enlargeCenterPage: true,
+                viewportFraction: 0.9,
+              ),
+            )
+
           ],
         ),
       ),
     );
   }
 
-  Widget _buildInfoCard(String value, String label, IconData icon) {
+  Widget _buildInfoCard(String value, String label, IconData icon,Color iconColor) {
     return Column(
       children: [
-        Icon(icon, color: Colors.black, size: 28),
+        Icon(icon, color: iconColor, size: 28),
         const SizedBox(height: 4),
         Text(value, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
         Text(label, style: TextStyle(color: Colors.black, fontSize: 12)),

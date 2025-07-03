@@ -50,7 +50,7 @@ class CommentInputBox extends StatelessWidget {
             onPressed: () {},
           ),
           IconButton(
-            icon: Icon(Icons.send, size: 20),
+            icon: Icon(Icons.send, size: 20,color: Colors.blueAccent,),
             onPressed: sendTap,
           ),
         ],
