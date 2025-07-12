@@ -5,11 +5,13 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:home_work/utils/navigation_routes.dart';
 import 'package:home_work/views/all_job/all_job_view.dart';
 import 'package:home_work/views/bootom_bar/bottom_bar_view.dart';
 import 'package:home_work/views/confirm_job/confirm_job_view.dart';
 import 'package:home_work/views/new_job/new_job_view.dart';
 import 'package:home_work/views/reject_job/reject_job_view.dart';
+import 'package:home_work/views/splash/splash_view.dart';
 import 'package:home_work/views/user_profile/edit_profile_details_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:home_work/views/home/home_view.dart';
@@ -67,18 +69,8 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
 
       ),
-      routes: {
-        '/': (context) =>isUserLoggedIn(widget.prefs, widget.user) ?
-        BottomBarView(user: widget.user): SignInView(prefs: widget.prefs),
-        '/sign_in': (context) => SignInView(),
-        '/signup': (context) => SignUpView(),
-        '/home': (context) => HomeView(),
-        '/new_job': (context) => NewJobView(),
-        '/all_job_view': (context) => AllJobView(),
-        '/confirm_job_view': (context) => ConfirmJobView(),
-        '/reject_job_view': (context) => RejectJobView(),
-        '/edit_profile_details_view': (context) => EditProfileDetails(userName: '',),
-      },
+      home: SplashView(prefs: widget.prefs, user: widget.user),
+      onGenerateRoute: AppRoutes.generateRoute,
     );
   }
 }

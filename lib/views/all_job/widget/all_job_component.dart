@@ -60,20 +60,7 @@ class _AllJobComponentState extends State<AllJobComponent> {
     });
   }
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(2015, 8),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-        selectedFormatDate = DateFormat('MMM d, yyyy').format(selectedDate);
-      });
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -180,150 +167,156 @@ class _AllJobComponentState extends State<AllJobComponent> {
             SizedBox(height: 6),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.calendar_month_outlined,
-                          color: AppColors.fontColorSuccess,
-                          size: 14,
-                        ),
-                        SizedBox(width: 4),
-                        Text(
-                          "Job Added :",
-                          style: TextStyle(
-                            fontSize: AppDimensions.kFontSize10,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.fontColorPrimary,
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.calendar_month_outlined,
+                            color: AppColors.fontColorSuccess,
+                            size: 14,
                           ),
-                        ),
-                        SizedBox(width: 2),
-                        Text(
-                          widget.addedDate!,
-                          style: TextStyle(
-                            fontSize: AppDimensions.kFontSize10,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.fontColorDark,
+                          SizedBox(width: 4),
+                          Text(
+                            "Job Added :",
+                            style: TextStyle(
+                              fontSize: AppDimensions.kFontSize10,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.fontColorPrimary,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 4),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.location_on_outlined,
-                          color: AppColors.fontColorGray,
-                          size: 14,
-                        ),
-                        SizedBox(width: 4),
-                        Text(
-                          "Location:",
-                          style: TextStyle(
-                            fontSize: AppDimensions.kFontSize10,
-                            fontWeight: FontWeight.w400,
+                          SizedBox(width: 2),
+                          Text(
+                            widget.addedDate!,
+                            style: TextStyle(
+                              fontSize: AppDimensions.kFontSize10,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.fontColorDark,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.location_on_outlined,
                             color: AppColors.fontColorGray,
+                            size: 14,
                           ),
-                        ),
-                        SizedBox(width: 2),
-                        Text(
-                          widget.location,
-                          style: TextStyle(
-                            fontSize: AppDimensions.kFontSize10,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.fontColorDark,
+                          SizedBox(width: 4),
+                          Text(
+                            "Location:",
+                            style: TextStyle(
+                              fontSize: AppDimensions.kFontSize10,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.fontColorGray,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 4),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.perm_identity,
-                          color: AppColors.fontColorGray,
-                          size: 14,
-                        ),
-                        SizedBox(width: 4),
-                        Text(
-                          "User_Name :",
-                          style: TextStyle(
-                            fontSize: AppDimensions.kFontSize10,
-                            fontWeight: FontWeight.w400,
+                          SizedBox(width: 2),
+                          Text(
+                            widget.location,
+                            style: TextStyle(
+                              fontSize: AppDimensions.kFontSize10,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.fontColorDark,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.perm_identity,
                             color: AppColors.fontColorGray,
+                            size: 14,
                           ),
-                        ),
-                        SizedBox(width: 2),
-                        Text(
-                          widget.userName!,
-                          style: TextStyle(
-                            fontSize: AppDimensions.kFontSize10,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.fontColorDark,
+                          SizedBox(width: 4),
+                          Text(
+                            "User_Name :",
+                            style: TextStyle(
+                              fontSize: AppDimensions.kFontSize10,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.fontColorGray,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 4),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.call,
-                          color: AppColors.fontColorGray,
-                          size: 14,
-                        ),
-                        SizedBox(width: 4),
-                        Text(
-                          "Mobile_Number :",
-                          style: TextStyle(
-                            fontSize: AppDimensions.kFontSize10,
-                            fontWeight: FontWeight.w400,
+                          SizedBox(width: 2),
+                          Text(
+                            widget.userName!,
+                            style: TextStyle(
+                              fontSize: AppDimensions.kFontSize10,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.fontColorDark,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.call,
                             color: AppColors.fontColorGray,
+                            size: 14,
                           ),
-                        ),
-                        SizedBox(width: 2),
-                        Text(
-                          widget.mobileNumber!,
-                          style: TextStyle(
-                            fontSize: AppDimensions.kFontSize10,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.fontColorDark,
+                          SizedBox(width: 4),
+                          Text(
+                            "Mobile_Number :",
+                            style: TextStyle(
+                              fontSize: AppDimensions.kFontSize10,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.fontColorGray,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          SizedBox(width: 2),
+                          Text(
+                            widget.mobileNumber!,
+                            style: TextStyle(
+                              fontSize: AppDimensions.kFontSize10,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.fontColorDark,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-                SizedBox(width: 58),
+
                 Container(
                   height: 50.0,
                   width: 1.0,
                   color: AppColors.fontColorGray,
                 ),
-                SizedBox(width: 35),
-                Column(
-                  children: [
-                    Text(
-                      'Today',
-                      style: TextStyle(
-                        fontSize: AppDimensions.kFontSize18,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.containerColor13,
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    children: [
+                      Text(
+                        'Today',
+                        style: TextStyle(
+                          fontSize: AppDimensions.kFontSize18,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.containerColor13,
+                        ),
                       ),
-                    ),
-                    Text(
-                      formattedDate,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: AppDimensions.kFontSize10,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.containerColor13,
+                      Text(
+                        formattedDate,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: AppDimensions.kFontSize10,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.containerColor13,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),

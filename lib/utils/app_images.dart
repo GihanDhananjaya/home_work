@@ -5,7 +5,6 @@ class AppImages {
   static const String icErrorRounded = 'images/png/ic_error_rounded.png';
   static const String icSuccessRounded = 'images/png/ic_success_rounded.png';
   static const String icWarningRounded = 'images/png/ic_warning_rounded.png';
-  static const String icClock = 'images/png/ic_clock.png';
   static const String icCalendar = 'images/png/ic_calendar.png';
   static const String icField = 'images/png/ic_field.png';
   static const String icEyeView = 'images/png/ic_eye_view.png';
@@ -72,4 +71,5 @@ class AppImages {
   static const String appCommentIcon = 'images/png/app_comment_icon.png';
   static const String appProfileIcon = 'images/png/app_profile_icon.png';
   static const String appWork = 'images/png/work.png';
+  static const String appLoginImg = 'images/png/app_login_img.png';
 }

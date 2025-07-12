@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_dimensions.dart';
 import '../../utils/app_images.dart';
+import '../../utils/navigation_routes.dart';
 
 class HomeView extends StatefulWidget {
   final User? user;
@@ -145,7 +146,7 @@ class _HomeViewState extends State<HomeView> {
                     containerBackGround:
                     AppColors.colorHover,
                     onTap: () {
-                      Navigator.pushNamed(context, '/all_job_view');
+                      Navigator.pushNamed(context, AppRoutes.allJob);
                     },
                   ),
                   const SizedBox(height: 16),
@@ -155,7 +156,7 @@ class _HomeViewState extends State<HomeView> {
                     containerBackGround:
                     AppColors.containerColor1,
                     onTap: () {
-                      Navigator.pushNamed(context, '/new_job');
+                      Navigator.pushNamed(context, AppRoutes.newJob);
                     },
                   ),
                   const SizedBox(height: 16),
@@ -169,7 +170,7 @@ class _HomeViewState extends State<HomeView> {
                           containerBackGround:
                           AppColors.containerColor2,
                           onTap: () {
-                            Navigator.pushNamed(context, '/confirm_job_view');
+                            Navigator.pushNamed(context, AppRoutes.confirmJob);
                           },
                           presentValue: _confirmedJobs,
                         ),
@@ -183,7 +184,7 @@ class _HomeViewState extends State<HomeView> {
                           containerBackGround:
                           AppColors.containerColor6,
                           onTap: () {
-                            Navigator.pushNamed(context, '/reject_job_view');
+                            Navigator.pushNamed(context, AppRoutes.rejectJob);
                           }, presentValue: _rejectedJobs,
                         ),
                       ),

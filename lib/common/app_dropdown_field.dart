@@ -36,20 +36,10 @@ class AppDropDownField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.only( left: 5,
-            bottom: 6,),
-          child: Text(
-            guideTitle ?? '',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: AppDimensions.kFontSize16,
-              color: AppColors.fontColorDark,
-            ),
-          ),
-        ),
-        SizedBox(height: 5),
         DropdownButtonFormField2<int>(
+          dropdownStyleData: DropdownStyleData(decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+              color: Colors.white)),
           hint: Text(
             dropDownHint ?? 'Select item',
             style: TextStyle(
@@ -100,16 +90,16 @@ class AppDropDownField extends StatelessWidget {
           decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
                 borderSide: const BorderSide(
-                    color: AppColors.fontLabelGray,width: 1.5),
+                    color: AppColors.colorDisableWidget,width: 1.5),
                 borderRadius: BorderRadius.all(
-                  Radius.circular(5),
+                  Radius.circular(8),
                 ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderSide: const BorderSide(
                     color: AppColors.fontLabelGray,width: 1.5),
                 borderRadius: BorderRadius.all(
-                  Radius.circular(5),
+                  Radius.circular(8),
                 ),
               ),
               errorStyle: TextStyle(
@@ -122,7 +112,7 @@ class AppDropDownField extends StatelessWidget {
                 borderSide: const BorderSide(
                     color: AppColors.fontLabelGray,width: 1.5),
                 borderRadius: BorderRadius.all(
-                  Radius.circular(5),
+                  Radius.circular(8),
                 ),
               ),
               filled: true,

@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart'; // Import FirebaseAuth
 import 'package:home_work/views/all_job/widget/all_job_component.dart';
 import 'package:intl/intl.dart';
 
+import '../../common/show_dialog.dart';
 import '../../utils/app_colors.dart';
 
 class AllJobView extends StatefulWidget {
@@ -20,84 +21,51 @@ class _AllJobViewState extends State<AllJobView> {
   Map<String, Time> _jobTimes = {};
   DateTime selectedDate = DateTime.now();
   String? selectedFormatDate;
-  String userRole = ''; // Track the user role
+  String userRole = '';
+  bool _initialLoading = true;
 
   @override
   void initState() {
     super.initState();
     _checkUserRole();
+
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        _initialLoading = false;
+      });
+    });
   }
 
   Future<void> _checkUserRole() async {
     User? currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser != null) {
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(currentUser.uid).get();
-      setState(() {
-        userRole = userDoc['user_role'];
-      });
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser.uid)
+          .get();
+
+      if (userDoc.exists && userDoc.data() != null) {
+        var data = userDoc.data() as Map<String, dynamic>;
+        setState(() {
+          userRole = data['user_role'] ?? ''; // මෙහි null නම් හිස් string එකක් දමනවා
+        });
+      } else {
+        setState(() {
+          userRole = '';
+        });
+      }
     }
   }
+
 
   Future<void> _deleteDocument(String docId) async {
     try {
       await FirebaseFirestore.instance.collection('job').doc(docId).delete();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Item deleted successfully')));
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error deleting item: $e')));
     }
   }
 
-  // Future<void> _editDocument(String docId, String firstName, String lastName) async {
-  //   TextEditingController firstNameController = TextEditingController(text: firstName);
-  //   TextEditingController lastNameController = TextEditingController(text: lastName);
-  //
-  //   return showDialog<void>(
-  //     context: context,
-  //     barrierDismissible: false, // User must tap a button to close the dialog
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: Text('Edit Details'),
-  //         content: SingleChildScrollView(
-  //           child: ListBody(
-  //             children: <Widget>[
-  //               TextField(
-  //                 controller: firstNameController,
-  //                 decoration: InputDecoration(labelText: 'First Name'),
-  //               ),
-  //               TextField(
-  //                 controller: lastNameController,
-  //                 decoration: InputDecoration(labelText: 'Last Name'),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //         actions: <Widget>[
-  //           TextButton(
-  //             child: Text('Cancel'),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //           TextButton(
-  //             child: Text('Save'),
-  //             onPressed: () async {
-  //               try {
-  //                 await FirebaseFirestore.instance.collection('personal_details').doc(docId).update({
-  //                   'first_name': firstNameController.text,
-  //                   'last_name': lastNameController.text,
-  //                 });
-  //                 Navigator.of(context).pop();
-  //                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Item updated successfully')));
-  //               } catch (e) {
-  //                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error updating item: $e')));
-  //               }
-  //             },
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
 
   Future<void> _confirmJob(
       String docId, String category, String description, Time time, String date, String adminDescription,
@@ -121,7 +89,14 @@ class _AllJobViewState extends State<AllJobView> {
         'user_role': userRole,
       });
       await _deleteDocument(docId);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Job confirmed successfully')));
+
+      CommonDialogUtil.showAppDialog(
+        context: context,
+        title: 'Success',
+        description: 'Your job confirm successfully!',
+        negativeButtonText: 'Ok',
+
+      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error confirming job: $e')));
     }
@@ -149,23 +124,18 @@ class _AllJobViewState extends State<AllJobView> {
         'user_role': userRole,
       });
       await _deleteDocument(docId);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Job reject successfully')));
+      CommonDialogUtil.showAppDialog(
+        context: context,
+        title: 'Success',
+        description: 'Your job reject successfully!',
+        negativeButtonText: 'Ok',
+
+      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error reject job: $e')));
     }
   }
 
-  // void _selectTime(String docId) {
-  //   showPicker(
-  //     context: context,
-  //     value: _jobTimes[docId] ?? Time(hour: 11, minute: 30, second: 0),
-  //     onChange: (Time newTime) {
-  //       setState(() {
-  //         _jobTimes[docId] = newTime;
-  //       });
-  //     },
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -222,7 +192,7 @@ class _AllJobViewState extends State<AllJobView> {
             ? FirebaseFirestore.instance.collection('job').snapshots()
             : FirebaseFirestore.instance.collection('job').where('user_id', isEqualTo: currentUser.uid).snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          if (_initialLoading ||snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -251,34 +221,54 @@ class _AllJobViewState extends State<AllJobView> {
                   },
                   showTime: jobTime,
                   onTap: () {
-                    _confirmJob(
-                      docId,
-                      document['category'],
-                      document['description'],
-                      jobTime,
-                      selectedFormatDate!,
-                      adminDescriptionController.text,
-                      document['device'],
-                      document['location'],
-                      document['name'],
-                      document['user_id'],
-                      document['user_role'],
-                    );
+                    if (selectedFormatDate == null || _jobTimes[docId] == null) {
+                      CommonDialogUtil.showAppDialog(
+                        context: context,
+                        title: 'Error',
+                        description: 'Please select your available Date and time',
+                        negativeButtonText: 'Ok',
+
+                      );
+                    } else {
+                      _confirmJob(
+                        docId,
+                        document['category'],
+                        document['description'],
+                        _jobTimes[docId]!,
+                        selectedFormatDate!,
+                        adminDescriptionController.text,
+                        document['device'],
+                        document['location'],
+                        document['name'],
+                        document['user_id'],
+                        document['user_role'],
+                      );
+                    }
+
                   },
                   deleteTap: (){
-                    _rejectJob(
-                      docId,
-                      document['category'],
-                      document['description'],
-                      jobTime,
-                      selectedFormatDate!,
-                      adminDescriptionController.text,
-                      document['device'],
-                      document['location'],
-                      document['name'],
-                      document['user_id'],
-                      document['user_role'],
-                    );
+                    if (adminDescriptionController.text.trim().isEmpty) {
+                      CommonDialogUtil.showAppDialog(
+                        context: context,
+                        title: 'Error',
+                        description: 'Please enter a reason before rejecting the job.',
+                        negativeButtonText: 'Ok',
+                      );
+                    } else {
+                      _rejectJob(
+                        docId,
+                        document['category'],
+                        document['description'],
+                        jobTime,
+                        selectedFormatDate ?? '', // can be empty string
+                        adminDescriptionController.text,
+                        document['device'],
+                        document['location'],
+                        document['name'],
+                        document['user_id'],
+                        document['user_role'],
+                      );
+                    }
                   },
                   name: document['category'],
                   location: document['location'],
@@ -318,4 +308,6 @@ class _AllJobViewState extends State<AllJobView> {
       });
     }
   }
+
+
 }

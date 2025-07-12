@@ -89,7 +89,7 @@ class _SignInViewState extends State<SignInView> {
                           color: AppColors.fontColorDark,
                           fontSize: AppDimensions.kFontSize18)),
                   SizedBox(height: 42),
-                  Image.asset(AppImages.appLogo5, height: 220,),
+                  Image.asset(AppImages.appLoginImg, height: 220,),
                   SizedBox(height: 42),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 23),

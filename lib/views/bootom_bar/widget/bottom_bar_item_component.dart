@@ -16,29 +16,34 @@ class BottomBarItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 50,
-      child: Column(
-        children: [
-          InkWell(
-            onTap: () {
-              onTap();
-            },
-            child: Image.asset(
-              icon,
-              color: isSelected ? AppColors.fontColorGray:
-              AppColors.fontColorWhite,
-              width:20,
-              height: 20,
+    return GestureDetector(
+      onTap: (){
+        onTap();
+      },
+      child: Container(
+        height: 50,
+        child: Column(
+          children: [
+            GestureDetector(
+              onTap: () {
+                onTap();
+              },
+              child: Image.asset(
+                icon,
+                color: isSelected ? AppColors.fontColorGray:
+                AppColors.fontColorWhite,
+                width:20,
+                height: 20,
+              ),
             ),
-          ),
-          SizedBox(height: 5),
-          Text(name,style: TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: 10,
-            color: AppColors.fontColorWhite,
-          ),)
-        ],
+            SizedBox(height: 5),
+            Text(name,style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 10,
+              color: AppColors.fontColorWhite,
+            ),)
+          ],
+        ),
       ),
     );
   }

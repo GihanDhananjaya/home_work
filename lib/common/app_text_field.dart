@@ -196,7 +196,7 @@ class _AppTextFieldState extends State<AppTextField> {
                   ),
                 ),
 
-                contentPadding: const EdgeInsets.all(16),
+                contentPadding: const EdgeInsets.all(14),
                 errorText: widget.errorMessage,
                 counterText: "",
                 prefixIcon: Padding(

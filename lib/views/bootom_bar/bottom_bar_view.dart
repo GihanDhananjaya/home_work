@@ -5,8 +5,8 @@ import 'package:home_work/views/bootom_bar/widget/bottom_bar_item_component.dart
 import '../../../../utils/app_colors.dart';
 import '../../../../utils/app_images.dart';
 import '../community/community_view.dart';
+import '../contact/contact_service_center_view.dart';
 import '../home/home_view.dart';
-import '../notifications/notifications_view.dart';
 import '../user_profile/user_profile_view.dart';
 
 class BottomBarView extends StatefulWidget {

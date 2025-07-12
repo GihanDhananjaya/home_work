@@ -141,7 +141,7 @@ class _AppMobileNumberFieldState extends State<AppMobileNumberField> {
           hintStyle: TextStyle(
               color: AppColors.colorDisableWidget,
               fontSize: AppDimensions.kFontSize12,fontWeight: FontWeight.w500),
-          fillColor: AppColors.fontColorWhite),
+          fillColor: AppColors.fieldBackgroundColor),
     );
   }
 }

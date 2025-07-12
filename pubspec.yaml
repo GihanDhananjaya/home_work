@@ -66,6 +66,7 @@ dependencies:
   flutter_screenutil: ^5.9.3
   flutter_bloc: ^9.0.0
   carousel_slider: ^5.1.1
+  modal_bottom_sheet: ^3.0.0
 
 
 

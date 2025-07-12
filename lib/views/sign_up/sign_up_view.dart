@@ -42,7 +42,7 @@ class _SignUpViewState extends State<SignUpView> {
               child: Column(
                 children: [
 
-                  Image.asset(AppImages.appLogo5, height: 220,),
+                  Image.asset(AppImages.appLoginImg, height: 220,),
                   SizedBox(height: 22),
                   Text(
                     "Welcome to the Job Tasker",

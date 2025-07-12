@@ -12,11 +12,11 @@ class DateComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8,vertical: 4),
+      padding: EdgeInsets.symmetric(horizontal: 8,vertical: 14),
       decoration: BoxDecoration(
+        border: Border.all(color: AppColors.colorDisableWidget),
         borderRadius: BorderRadius.circular(8),
-        boxShadow: [BoxShadow(color: AppColors.fontColorGray,spreadRadius: 0,blurRadius: 2)],
-        color: AppColors.fontColorWhite,
+        color: AppColors.fieldBackgroundColor,
       ),
       child: Row(
         children: [
