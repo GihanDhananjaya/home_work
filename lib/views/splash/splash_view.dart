@@ -44,11 +44,25 @@ class _SplashViewState extends State<SplashView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: AppColors.btnGradient1,
-      body: Center(
-        child: Text("Job Tasker",
-        style: TextStyle(color: AppColors.fontColorWhite,fontWeight: FontWeight.w700,fontSize: 24),), // You can show your logo here
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Text("Job Tasker",
+            style: TextStyle(color: AppColors.fontColorWhite,fontWeight: FontWeight.w700,fontSize: 26),), // You can show your logo here
+          ),
+          SizedBox(height: 44,),
+          Text(
+            'Version 0.0.1',
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: AppColors.fontColorWhite),
+          ),
+        ],
       ),
     );
   }
