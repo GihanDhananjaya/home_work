@@ -56,7 +56,7 @@ class _SplashViewState extends State<SplashView> {
           ),
           SizedBox(height: 44,),
           Text(
-            'Version 0.0.1',
+            'Version 0.0.2',
             style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
