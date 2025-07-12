@@ -62,7 +62,7 @@ class AppDialog extends StatelessWidget {
           dialogContentWidget!,
         ],
 
-        const SizedBox(height: 20),
+        const SizedBox(height: 22),
 
         // Buttons
         Row(
