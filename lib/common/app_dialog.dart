@@ -35,12 +35,14 @@ class AppDialog extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Title
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: isWideScreen ? 20 : 18,
-            fontWeight: FontWeight.bold,
-            color: AppColors.fontColorGray,
+        Center(
+          child: Text(
+            title,
+            style: TextStyle(
+              fontSize: isWideScreen ? 20 : 18,
+              fontWeight: FontWeight.bold,
+              color: AppColors.fontColorGray,
+            ),
           ),
         ),
         const SizedBox(height: 10),
