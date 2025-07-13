@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:home_work/views/confirm_job/widget/confirm_job_component.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
+import 'package:home_work/views/reject_job/widget/reject_job_component.dart';
 
+import '../../common/show_dialog.dart';
 import '../../utils/app_colors.dart';
 
 class RejectJobView extends StatefulWidget {
@@ -15,11 +17,18 @@ class RejectJobView extends StatefulWidget {
 
 class _RejectJobViewState extends State<RejectJobView> {
   String userRole = '';
+  bool _initialLoading = true;
 
   @override
   void initState() {
     super.initState();
     _checkUserRole();
+
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        _initialLoading = false;
+      });
+    });
   }
 
 
@@ -88,8 +97,8 @@ class _RejectJobViewState extends State<RejectJobView> {
           if (snapshot.connectionState == ConnectionState.done) {
             return Center(child: CircularProgressIndicator());
           }
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: Text('No data available'));
+          if (_initialLoading ||snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
           }
           return ListView.builder(
             itemCount: snapshot.data!.docs.length,
@@ -102,7 +111,28 @@ class _RejectJobViewState extends State<RejectJobView> {
 
               return Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ConfirmJobComponent(
+                child: RejectJobComponent(
+                  onTap: (){
+                    CommonDialogUtil.showAppDialog(
+                      context: context,
+                      title: 'Success',
+                      description: 'Do you need to delete reject Job ?',
+                      negativeButtonText: 'No',
+                      positiveButtonText: 'Yes',
+                      onPositiveCallback: () async {
+                        try {
+                          await FirebaseFirestore.instance
+                              .collection('reject_job')
+                              .doc(document.id)
+                              .delete();
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Error deleting job: $e')),
+                          );
+                        }
+                      },
+                    );
+                  },
                   adminDescription: document['admin_description'],
                   confirmedDate: confirmedDate,
                   time: time,

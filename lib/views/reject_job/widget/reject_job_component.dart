@@ -96,7 +96,6 @@ class _RejectJobComponentState extends State<RejectJobComponent> {
                     fontSize: AppDimensions.kFontSize14,
                   ),
                 ),
-                if (widget.onTap != null)
                   GestureDetector(
                     onTap: widget.onTap,
                     child: Container(
@@ -104,15 +103,15 @@ class _RejectJobComponentState extends State<RejectJobComponent> {
                       height: 21,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(4),
-                        color: AppColors.fontColorSuccess,
+                        color: AppColors.containerColor13,
                       ),
                       child: Center(
                         child: Text(
-                          'CONFIRM',
+                          'DELETE',
                           style: TextStyle(
-                            fontSize: AppDimensions.kFontSize8,
+                            fontSize: AppDimensions.kFontSize9,
                             fontWeight: FontWeight.w700,
-                            color: AppColors.colorReviewing,
+                            color: AppColors.fontColorWhite,
                           ),
                         ),
                       ),
@@ -146,149 +145,153 @@ class _RejectJobComponentState extends State<RejectJobComponent> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.calendar_month_outlined,
-                          color: AppColors.fontColorSuccess,
-                          size: 14,
-                        ),
-                        SizedBox(width: 4),
-                        Text(
-                          "Rejected :",
-                          style: TextStyle(
-                            fontSize: AppDimensions.kFontSize10,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.fontColorPrimary,
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.calendar_month_outlined,
+                            color: AppColors.fontColorSuccess,
+                            size: 14,
                           ),
-                        ),
-                        SizedBox(width: 2),
-                        Text(
-                          widget.confirmedDate ?? 'Date not available',
-                          style: TextStyle(
-                            fontSize: AppDimensions.kFontSize10,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.fontColorDark,
+                          SizedBox(width: 4),
+                          Text(
+                            "Rejected :",
+                            style: TextStyle(
+                              fontSize: AppDimensions.kFontSize10,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.fontColorPrimary,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 4),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.access_time,
-                          color: AppColors.fontColorGray,
-                          size: 14,
-                        ),
-                        SizedBox(width: 4),
-                        Text(
-                          "Time :",
-                          style: TextStyle(
-                            fontSize: AppDimensions.kFontSize10,
-                            fontWeight: FontWeight.w400,
+                          SizedBox(width: 2),
+                          Text(
+                            widget.confirmedDate ?? 'Date not available',
+                            style: TextStyle(
+                              fontSize: AppDimensions.kFontSize10,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.fontColorDark,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.access_time,
                             color: AppColors.fontColorGray,
+                            size: 14,
                           ),
-                        ),
-                        SizedBox(width: 2),
-                        Text(
-                          formatTime(widget.time), // Use the formatTime method
-                          style: TextStyle(
-                            fontSize: AppDimensions.kFontSize10,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.fontColorDark,
+                          SizedBox(width: 4),
+                          Text(
+                            "Time :",
+                            style: TextStyle(
+                              fontSize: AppDimensions.kFontSize10,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.fontColorGray,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 4),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.location_on_outlined,
-                          color: AppColors.fontColorGray,
-                          size: 14,
-                        ),
-                        SizedBox(width: 4),
-                        Text(
-                          "Location :",
-                          style: TextStyle(
-                            fontSize: AppDimensions.kFontSize10,
-                            fontWeight: FontWeight.w400,
+                          SizedBox(width: 2),
+                          Text(
+                            formatTime(widget.time), // Use the formatTime method
+                            style: TextStyle(
+                              fontSize: AppDimensions.kFontSize10,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.fontColorDark,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.location_on_outlined,
                             color: AppColors.fontColorGray,
+                            size: 14,
                           ),
-                        ),
-                        SizedBox(width: 2),
-                        Text(
-                          widget.location,
-                          style: TextStyle(
-                            fontSize: AppDimensions.kFontSize10,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.fontColorDark,
+                          SizedBox(width: 4),
+                          Text(
+                            "Location :",
+                            style: TextStyle(
+                              fontSize: AppDimensions.kFontSize10,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.fontColorGray,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 4),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.supervisor_account_sharp,
-                          color: AppColors.fontColorGray,
-                          size: 14,
-                        ),
-                        SizedBox(width: 4),
-                        Text(
-                          'User Name',
-                          style: TextStyle(
-                            fontSize: AppDimensions.kFontSize10,
-                            fontWeight: FontWeight.w400,
+                          SizedBox(width: 2),
+                          Text(
+                            widget.location,
+                            style: TextStyle(
+                              fontSize: AppDimensions.kFontSize10,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.fontColorDark,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 4),
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.supervisor_account_sharp,
                             color: AppColors.fontColorGray,
+                            size: 14,
                           ),
-                        ),
-                        SizedBox(width: 2),
-                        Text(
-                          widget.userName!, // Use the formatTime method
-                          style: TextStyle(
-                            fontSize: AppDimensions.kFontSize10,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.fontColorDark,
+                          SizedBox(width: 4),
+                          Text(
+                            'User Name',
+                            style: TextStyle(
+                              fontSize: AppDimensions.kFontSize10,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.fontColorGray,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          SizedBox(width: 2),
+                          Text(
+                            widget.userName!, // Use the formatTime method
+                            style: TextStyle(
+                              fontSize: AppDimensions.kFontSize10,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.fontColorDark,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-                SizedBox(width: 58),
                 Container(
                   height: 50.0,
                   width: 1.0,
                   color: AppColors.fontColorGray,
                 ),
-                SizedBox(width: 35),
-                Column(
-                  children: [
-                    Text(
-                      'Today',
-                      style: TextStyle(
-                        fontSize: AppDimensions.kFontSize18,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.containerColor13,
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    children: [
+                      Text(
+                        'Today',
+                        style: TextStyle(
+                          fontSize: AppDimensions.kFontSize18,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.containerColor13,
+                        ),
                       ),
-                    ),
-                    Text(
-                      formattedDate,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontSize: AppDimensions.kFontSize10,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.containerColor13,
+                      Text(
+                        formattedDate,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: AppDimensions.kFontSize10,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.containerColor13,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
