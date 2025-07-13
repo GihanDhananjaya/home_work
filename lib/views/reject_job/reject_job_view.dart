@@ -86,6 +86,7 @@ class _RejectJobViewState extends State<RejectJobView> {
         ),
         title: Text(
           'Reject Jobs',
+
           style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500,fontSize: 18),
         ),
       ),
