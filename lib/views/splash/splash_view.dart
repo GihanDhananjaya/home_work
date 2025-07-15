@@ -28,6 +28,7 @@ class _SplashViewState extends State<SplashView> {
   }
 
   Future<void> checkConnection() async {
+
     final connectivityResult = await Connectivity().checkConnectivity();
 
     bool hasInternet = false;
