@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "199375982331",
     "project_id": "fir-prpject-af778",
-    "storage_bucket": "fir-prpject-af778.appspot.com"
+    "storage_bucket": "fir-prpject-af778.firebasestorage.app"
   },
   "client": [
     {
@@ -12,7 +12,20 @@
           "package_name": "com.example.home_work"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "199375982331-7p5m3jgofu8a5h55pi1lmdohd97sd6pm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.home_work",
+            "certificate_hash": "49132fec0f41725f71bd27ac87b3ddc3b5a80d8e"
+          }
+        },
+        {
+          "client_id": "199375982331-lvms4ig76fmsk0u816a6e1k4klrq06bp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAOgaaiFYJKdfKGzwglGgnzeGlBNcxdaic"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "199375982331-lvms4ig76fmsk0u816a6e1k4klrq06bp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
