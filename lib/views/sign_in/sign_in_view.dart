@@ -210,7 +210,9 @@ class _SignInViewState extends State<SignInView> {
                 minimumSize: Size(12, 18),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               ),
-              icon: Image.asset(AppImages.appGoogleImg, height: 25), // Add google icon to assets
+              icon: ClipRRect(
+                  borderRadius: BorderRadius.circular(60),
+                  child: Image.asset(AppImages.appGoogleImg, height: 25)), // Add google icon to assets
               label: Text('Sign in with Google'),
               onPressed: _signInWithGoogle,
             ),
