@@ -72,4 +72,6 @@ class AppImages {
   static const String appProfileIcon = 'images/png/app_profile_icon.png';
   static const String appWork = 'images/png/work.png';
   static const String appLoginImg = 'images/png/app_login_img.png';
+  static const String appInternetErrorImg = 'images/png/internet_error_img.png';
+  static const String appGoogleImg = 'images/png/app_google_img.png';
 }

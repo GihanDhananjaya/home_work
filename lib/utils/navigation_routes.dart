@@ -7,6 +7,7 @@ import 'package:home_work/views/reject_job/reject_job_view.dart';
 import 'package:home_work/views/sign_in/sign_in_view.dart';
 import 'package:home_work/views/sign_up/sign_up_view.dart';
 import '../views/user_profile/edit_profile_details_view.dart';
+import '../views/user_profile/user_profile_view.dart';
 
 class AppRoutes {
   static const String signIn = '/sign_in';
@@ -42,9 +43,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => RejectJobView());
 
       case editProfile:
-        final args = settings.arguments as String? ?? '';
         return MaterialPageRoute(
-          builder: (_) => EditProfileDetails(userName: args),
+          builder: (_) => EditProfileDetails(userdata: settings.arguments as UserData),
         );
 
       default:

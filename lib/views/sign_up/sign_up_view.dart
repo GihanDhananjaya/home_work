@@ -36,7 +36,7 @@ class _SignUpViewState extends State<SignUpView> {
       body: Stack(
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 23.0),
+            padding: EdgeInsets.symmetric(horizontal: 23.0,vertical: 20),
             child: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
               child: Column(

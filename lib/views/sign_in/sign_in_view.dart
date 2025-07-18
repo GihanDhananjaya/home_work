@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../common/app_button.dart';
 import '../../common/app_text_field.dart';
@@ -72,101 +73,151 @@ class _SignInViewState extends State<SignInView> {
   }
 
 
+  Future<void> _signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      if (googleUser == null) return; // Cancelled
+
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final UserCredential userCredential =
+      await FirebaseAuth.instance.signInWithCredential(credential);
+
+      final user = userCredential.user;
+
+      if (user != null) {
+        // Save login to SharedPreferences
+        await widget.prefs?.setBool('userLoggedIn', true);
+
+        // Navigate to BottomBarView
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => BottomBarView(user: user)),
+        );
+      }
+    } catch (e) {
+      _showErrorDialog('Google Sign-In failed. Please try again.');
+      print('Google Sign-In Error: $e');
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.containerColor7,
-      body: Stack(
-        children: [
-          Center(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(height: 40),
-                  Text("Job Tasker",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w900,
-                          color: AppColors.fontColorDark,
-                          fontSize: AppDimensions.kFontSize18)),
-                  SizedBox(height: 42),
-                  Image.asset(AppImages.appLoginImg, height: 220,),
-                  SizedBox(height: 42),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 23),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Log in to continue",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.fontColorDark,
-                                fontSize: AppDimensions.kFontSize15)),
-                        SizedBox(height: 24),
-                        AppTextField(
-                          hint: "E-mail",
-                          icon: Icon(Icons.email_outlined),
-                          controller: emailController,
-                        ),
-                        SizedBox(height: 32),
-                        AppPasswordField(
-                          hint: "Password",
-                          controller: passwordController,
-                          icon: Icon(Icons.lock_open),
-                        ),
-                        SizedBox(height: 24),
-                        InkWell(
-                          onTap: () {
-                            // Navigator.pushNamed(context, Routes.kResetPasswordView);
-                          },
-                          child: Text("Forget password?",
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: 40),
+                    Text("Job Tasker",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            color: AppColors.fontColorDark,
+                            fontSize: AppDimensions.kFontSize18)),
+                    SizedBox(height: 42),
+                    Image.asset(AppImages.appLoginImg, height: 220,),
+                    SizedBox(height: 42),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 23),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Log in to continue",
                               style: TextStyle(
-                                  decoration: TextDecoration.underline,
                                   fontWeight: FontWeight.w600,
-                                  color: AppColors.colorIconOuter,
-                                  fontSize: AppDimensions.kFontSize14)),
-                        ),
-                        SizedBox(height: 100),
-                        AppButton(
-                          buttonText: "Login",
-                          onTapButton: () async {
-                            if (_fieldValidation()) {
-                              await loginUser();
-                            }
-                          },
-                        ),
-                        SizedBox(height: 30),
-                      ],
+                                  color: AppColors.fontColorDark,
+                                  fontSize: AppDimensions.kFontSize15)),
+                          SizedBox(height: 24),
+                          AppTextField(
+                            hint: "E-mail",
+                            icon: Icon(Icons.email_outlined),
+                            controller: emailController,
+                          ),
+                          SizedBox(height: 32),
+                          AppPasswordField(
+                            hint: "Password",
+                            controller: passwordController,
+                            icon: Icon(Icons.lock_open),
+                          ),
+                          SizedBox(height: 24),
+                          InkWell(
+                            onTap: () {
+                              // Navigator.pushNamed(context, Routes.kResetPasswordView);
+                            },
+                            child: Text("Forget password?",
+                                style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.colorIconOuter,
+                                    fontSize: AppDimensions.kFontSize14)),
+                          ),
+                          SizedBox(height: 50),
+                          AppButton(
+                            buttonText: "Login",
+                            onTapButton: () async {
+                              if (_fieldValidation()) {
+                                await loginUser();
+                              }
+                            },
+                          ),
+
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          GestureDetector(
-            onTap: (){
-              Navigator.pushNamed(context, '/signup');
-            },
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.0),
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Text(
-                  'Already have an account? SignUp',
-                  textAlign: TextAlign.end,
-                  style: TextStyle(
-                    fontSize: AppDimensions.kFontSize12,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.fontColorGray,
-                    decoration:
-                    TextDecoration.underline,
-                    decorationColor:
-                    AppColors.colorReviewing,
+            GestureDetector(
+              onTap: (){
+                Navigator.pushNamed(context, '/signup');
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 20.0),
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Text(
+                    'Already have an account? SignUp',
+                    textAlign: TextAlign.end,
+                    style: TextStyle(
+                      fontSize: AppDimensions.kFontSize12,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.fontColorGray,
+                      decoration:
+                      TextDecoration.underline,
+                      decorationColor:
+                      AppColors.colorReviewing,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+            Text('Or'),
+            SizedBox(height: 12),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.black,
+                minimumSize: Size(12, 18),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              icon: Image.asset(AppImages.appGoogleImg, height: 24), // Add google icon to assets
+              label: Text('Sign in with Google'),
+              onPressed: _signInWithGoogle,
+            ),
+            SizedBox(height: 12),
+        
+          ],
+        ),
       ),
     );
   }

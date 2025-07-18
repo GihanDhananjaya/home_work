@@ -4,11 +4,23 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../common/app_rectangel_shimmer.dart';
+import '../../common/show_dialog.dart';
 import '../../utils/app_colors.dart';
 import '../../utils/app_dimensions.dart';
 import '../../utils/app_images.dart';
+import '../../utils/navigation_routes.dart';
 import '../sign_in/sign_in_view.dart';
 import 'common/profile_component.dart';
+
+class UserData{
+  final String userName;
+  final String email;
+  final String mobileNumber;
+  final int userId;
+
+  UserData({required this.userName, required this.email,required this.mobileNumber,required this.userId});
+}
+
 
 class UserProfile extends StatefulWidget {
   get prefs => null;
@@ -22,7 +34,8 @@ class _UserProfileState extends State<UserProfile> {
 
   String? userName;
   String? userEmail;
-  //String? userMobileNumber;
+  String? userMobileNumber;
+  int? userId;
 
   Future<void> _fetchUserData() async {
     try {
@@ -35,14 +48,16 @@ class _UserProfileState extends State<UserProfile> {
         setState(() {
           userName = userData['name'] ?? '';
           userEmail = userData['email'] ?? '';
-         // userMobileNumber = userData['phoneNumber'] ?? '';
+          userMobileNumber = userData['mobile'] ?? '';
+          userId = userData['user_id'] ?? 0;
         });
 
         // Save user data to SharedPreferences
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('userName', userName ?? '');
         await prefs.setString('userEmail', userEmail ?? '');
-       // await prefs.setString('userMobileNumber', userMobileNumber ?? '');
+        await prefs.setString('mobile', userMobileNumber ?? '');
+        await prefs.setInt('user_id', userId ?? 0);
       }
     } catch (error) {
       print('Error fetching user data: $error');
@@ -54,7 +69,8 @@ class _UserProfileState extends State<UserProfile> {
     setState(() {
       userName = prefs.getString('userName');
       userEmail = prefs.getString('userEmail');
-      //userMobileNumber = prefs.getString('userMobileNumber');
+      userMobileNumber = prefs.getString('mobile');
+      userId = prefs.getInt('user_id');
     });
   }
 
@@ -95,110 +111,161 @@ class _UserProfileState extends State<UserProfile> {
           child: Column(
             children: [
               SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 82,
-                    height: 82,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100),
-                      child: CachedNetworkImage(
-                        imageUrl: '',
-                        fit: BoxFit.fill,
-                        placeholder: (context, url) => AppRectangleShimmer(
-                          color: AppColors.fontColorDark.withOpacity(0.8),
-                          height: double.infinity,
-                          width: double.infinity,
-                        ),
-                        errorWidget: (context, url, error) => CircleAvatar(
-                          backgroundColor: AppColors.fontColorGray.withOpacity(0.7),
-                          child: Center(
-                            child: Text(
-                              userName!,
-                              style: TextStyle(
-                                color: AppColors.fontColorWhite,
-                                fontSize: AppDimensions.kFontSize28,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              ProfileComponent(
-                hint: 'Name',
-                value: userName ?? '',
-                onTap: () {
-                  Navigator.pushNamed(context, '/edit_profile_details_view',arguments: userName);
-                },
-              ),
-              const SizedBox(height: 10),
-              ProfileComponent(
-                hint: 'Email Address',
-                value: userEmail ?? '',
-                onTap: () {},
-              ),
-              const SizedBox(height: 10),
-              // ProfileComponent(
-              //   hint: 'Mobile Number',
-              //   value: userMobileNumber ?? '',
-              //   onTap: () {},
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //     SizedBox(
+              //       width: 82,
+              //       height: 82,
+              //       child: ClipRRect(
+              //         borderRadius: BorderRadius.circular(100),
+              //         child: CachedNetworkImage(
+              //           imageUrl: '',
+              //           fit: BoxFit.fill,
+              //           placeholder: (context, url) => AppRectangleShimmer(
+              //             color: AppColors.fontColorDark.withOpacity(0.8),
+              //             height: double.infinity,
+              //             width: double.infinity,
+              //           ),
+              //           errorWidget: (context, url, error) => CircleAvatar(
+              //             backgroundColor: AppColors.fontColorGray.withOpacity(0.7),
+              //             child: Center(
+              //               child: Text(
+              //                 userName!?? "User Name",
+              //                 style: TextStyle(
+              //                   color: AppColors.fontColorWhite,
+              //                   fontSize: AppDimensions.kFontSize28,
+              //                   fontWeight: FontWeight.w500,
+              //                 ),
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ],
               // ),
-              const SizedBox(height: 12),
-              InkWell(
-                onTap: () {},
-                child: Container(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 15,
-                    horizontal: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.fontColorWhite,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: AppColors.fontColorGray,
-                      width: 0.75,
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        AppImages.icLock,
-                        height: 20,
-                        color: AppColors.containerColor6,
-                      ),
-                      SizedBox(width: 32),
-                      Expanded(
-                        child: Text(
-                          'Passwords',
-                          style: TextStyle(
-                            fontSize: AppDimensions.kFontSize14,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.fontColorGray,
-                          ),
-                        ),
-                      ),
-                      Image.asset(
-                        AppImages.appArrowLeft,
-                        height: 20,
-                      ),
+              SizedBox(height: 20,),
+              Container(
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [
+                      AppColors.btnGradient1,
+                      AppColors.containerColor4,
                     ],
                   ),
                 ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox.shrink(),
+                        InkResponse(
+                          onTap: (){
+                            Navigator.pushNamed(context, AppRoutes.editProfile,arguments: UserData(userName: userName!,
+                                email: userEmail!, mobileNumber: userMobileNumber!, userId: userId!));
+                          },
+                          child: Icon(
+                            Icons.edit,
+                            size: 18,
+                            color: AppColors.fontColorWhite,
+                          ),
+                        ),
+                      ],
+                    ),
+                    ProfileComponent(
+                      hint: 'Name',
+                      value: userName ?? '',
+                      onTap: () {},
+                    ),
+                    const SizedBox(height: 10),
+                    ProfileComponent(
+                      hint: 'Email Address',
+                      value: userEmail ?? '',
+                      onTap: () {},
+                    ),
+                    const SizedBox(height: 10),
+                    ProfileComponent(
+                      hint: 'Mobile Number',
+                      value: "+94 ${userMobileNumber}" ?? '',
+                      onTap: () {},
+                    ),
+                    const SizedBox(height: 22),
+                    InkWell(
+                      onTap: () {},
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                          vertical: 15,
+                          horizontal: 8,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.fontColorWhite,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: AppColors.fontColorGray,
+                            width: 0.75,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              AppImages.icLock,
+                              height: 20,
+                              color: AppColors.containerColor6,
+                            ),
+                            SizedBox(width: 32),
+                            Text(
+                              'Passwords',
+                              style: TextStyle(
+                                fontSize: AppDimensions.kFontSize14,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.fontColorGray,
+                              ),
+                            ),
+                            Image.asset(
+                              AppImages.appArrowLeft,
+                              height: 20,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
+
               SizedBox(height: 50),
+
               GestureDetector(
                 onTap: () {
-                  FirebaseAuth.instance.signOut().then((value) => {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => SignInView(prefs: widget.prefs)),
-                    ),
-                  });
+                  CommonDialogUtil.showAppDialog(
+                    context: context,
+                    title: 'Logout',
+                    description: 'Are you sure you want to log out?',
+                    onPositiveCallback: () async {
+
+                      await FirebaseAuth.instance.signOut();
+
+                      SharedPreferences prefs = await SharedPreferences.getInstance();
+                      await prefs.clear();
+
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SignInView(prefs: prefs),
+                        ),
+                      );
+                    },
+                    positiveButtonText: "Yes",
+                    negativeButtonText: "No",
+                    onNegativeCallback: (){}
+                  );
                 },
                 child: Container(
                   width: 150,
@@ -208,7 +275,7 @@ class _UserProfileState extends State<UserProfile> {
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                       colors: [
-                        AppColors.btnGradient1,
+                        AppColors.containerColor13,
                         AppColors.containerColor4,
                       ],
                     ),
@@ -228,7 +295,7 @@ class _UserProfileState extends State<UserProfile> {
                         style: TextStyle(
                           color: AppColors.fontColorWhite,
                           fontSize: AppDimensions.kFontSize14,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w700,
                         ),
                       ),
                     ],

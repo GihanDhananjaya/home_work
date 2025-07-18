@@ -34,45 +34,37 @@ class _ProfileComponentState extends State<ProfileComponent> {
           child: Text(
             widget.hint,
             style: TextStyle(
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
               fontSize: AppDimensions.kFontSize14,
-              color: AppColors.fontColorDark,
+              color: AppColors.fontColorWhite,
             ),
           ),
         ),
-        InkWell(
-          onTap: widget.onTap,
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-            decoration: BoxDecoration(
-              border: Border.all(color: AppColors.fontLabelGray,width: 1.5),
-              borderRadius: BorderRadius.all(Radius.circular(12)),
-              color: AppColors.fieldBackgroundColor,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+          decoration: BoxDecoration(
+            border: Border.all(color: AppColors.fontLabelGray,width: 1.5),
+            borderRadius: BorderRadius.all(Radius.circular(12)),
+            color: AppColors.fieldBackgroundColor,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
 
-                Expanded(
-                  child: Text(
-                    widget.value,
-                    maxLines: 2,
-                    style: TextStyle(
-                      overflow: TextOverflow.ellipsis,
-                      fontWeight: FontWeight.w600,
-                      fontSize: AppDimensions.kFontSize14,
-                      color: AppColors.fontColorGray,
-                    ),
+              Expanded(
+                child: Text(
+                  widget.value,
+                  maxLines: 2,
+                  style: TextStyle(
+                    overflow: TextOverflow.ellipsis,
+                    fontWeight: FontWeight.w600,
+                    fontSize: AppDimensions.kFontSize14,
+                    color: AppColors.fontColorGray,
                   ),
                 ),
-                SizedBox(width: 10),
-                Icon(
-                  Icons.edit,
-                  size: 18,
-                  color: AppColors.fontColorDark,
-                )
-              ],
-            ),
+              ),
+              SizedBox(width: 10),
+            ],
           ),
         )
       ],

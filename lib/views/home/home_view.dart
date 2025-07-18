@@ -122,10 +122,7 @@ class _HomeViewState extends State<HomeView> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               decoration:  BoxDecoration(
-                  gradient: LinearGradient(colors: [
-                    AppColors.btnGradient1.withOpacity(0.3),
-                    AppColors.fontColorDark.withOpacity(0.3)
-                  ])
+                 color: AppColors.fontColorWhite
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

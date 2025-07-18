@@ -32,8 +32,8 @@ class BottomBarItem extends StatelessWidget {
                 icon,
                 color: isSelected ? AppColors.fontColorGray:
                 AppColors.fontColorWhite,
-                width:20,
-                height: 20,
+                width:25,
+                height: 25,
               ),
             ),
             SizedBox(height: 5),
