@@ -41,7 +41,7 @@ class _EditProfileDetailsState extends State<EditProfileDetails> {
     setState(() {
       nameController.text = widget.userdata.userName;
       emailController.text = widget.userdata.email;
-      mobileNumberController.text = widget.userdata.mobileNumber;
+      mobileNumberController.text = widget.userdata.mobileNumber!;
       super.initState();
     });
   }

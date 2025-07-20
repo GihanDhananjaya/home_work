@@ -37,32 +37,59 @@ class _UserProfileState extends State<UserProfile> {
   String? userMobileNumber;
   int? userId;
 
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData();
+  }
+
+
+
   Future<void> _fetchUserData() async {
     try {
-      User? user = _auth.currentUser;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      if (user != null) {
-        // Fetch additional user data from Firestore
-        DocumentSnapshot userData = await _firestore.collection('users').doc(user.uid).get();
-
+      // Check if data already exists in SharedPreferences
+      if (prefs.containsKey('userName') &&
+          prefs.containsKey('userEmail') &&
+          prefs.containsKey('mobile') &&
+          prefs.containsKey('user_id')) {
+        // Load from SharedPreferences
         setState(() {
-          userName = userData['name'] ?? '';
-          userEmail = userData['email'] ?? '';
-          userMobileNumber = userData['mobile'] ?? '';
-          userId = userData['user_id'] ?? 0;
+          userName = prefs.getString('userName');
+          userEmail = prefs.getString('userEmail');
+          userMobileNumber = prefs.getString('mobile');
+          userId = prefs.getInt('user_id');
         });
-
-        // Save user data to SharedPreferences
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('userName', userName ?? '');
-        await prefs.setString('userEmail', userEmail ?? '');
-        await prefs.setString('mobile', userMobileNumber ?? '');
-        await prefs.setInt('user_id', userId ?? 0);
+        return; // Stop here (don’t fetch from Firestore)
       }
-    } catch (error) {
-      print('Error fetching user data: $error');
+
+      // First-time fetch from Firestore
+      User? user = _auth.currentUser;
+      if (user != null) {
+        DocumentSnapshot userData =
+        await _firestore.collection('users').doc(user.uid).get();
+
+        userName = userData['name'] ?? '';
+        userEmail = userData['email'] ?? '';
+        userMobileNumber = userData['mobile'] ?? '';
+        userId = userData['user_id'] is int
+            ? userData['user_id']
+            : int.tryParse(userData['user_id'].toString()) ?? 0;
+
+        setState(() {});
+
+        // Save to SharedPreferences
+        await prefs.setString('userName', userName!);
+        await prefs.setString('userEmail', userEmail!);
+        await prefs.setString('mobile', userMobileNumber!);
+        await prefs.setInt('user_id', userId!);
+      }
+    } catch (e) {
+      print('Error fetching user data: $e');
     }
   }
+
 
   Future<void> _loadUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -74,15 +101,6 @@ class _UserProfileState extends State<UserProfile> {
     });
   }
 
-  @override
-  void initState() {
-    setState(() {
-      super.initState();
-      _loadUserData(); // Load user data from SharedPreferences when the widget is initialized
-      _fetchUserData(); // Fetch user data from Firestore
-    });
-
-  }
 
   @override
   Widget build(BuildContext context) {

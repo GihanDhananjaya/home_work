@@ -90,6 +90,16 @@ class _SignInViewState extends State<SignInView> {
 
       final user = userCredential.user;
 
+      await FirebaseFirestore.instance.collection('users').doc(user!.uid).set({
+        'name': user.displayName,
+        'email': user.email,
+        'photoUrl': user.photoURL,
+        'user_id': user.uid,
+        'mobile': user.phoneNumber,
+        'user_role': 'user',
+      });
+
+
       if (user != null) {
         // Save login to SharedPreferences
         await widget.prefs?.setBool('userLoggedIn', true);
