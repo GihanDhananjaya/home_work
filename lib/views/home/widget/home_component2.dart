@@ -46,6 +46,7 @@ class HomeComponent2 extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
         ),
         child: Row(
+
           children: [
             Image.asset(
             image,
