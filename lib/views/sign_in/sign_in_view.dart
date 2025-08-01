@@ -74,10 +74,99 @@ class _SignInViewState extends State<SignInView> {
   }
 
 
+  // Future<void> _signInWithGoogle() async {
+  //   try {
+  //     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  //     if (googleUser == null) return; // Cancelled
+  //
+  //     final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+  //
+  //     final credential = GoogleAuthProvider.credential(
+  //       accessToken: googleAuth.accessToken,
+  //       idToken: googleAuth.idToken,
+  //     );
+  //
+  //     final UserCredential userCredential =
+  //     await FirebaseAuth.instance.signInWithCredential(credential);
+  //
+  //     final user = userCredential.user;
+  //
+  //     await FirebaseFirestore.instance.collection('users').doc(user!.uid).set({
+  //       'name': user.displayName,
+  //       'email': user.email,
+  //       'photoUrl': user.photoURL,
+  //       'user_id': user.uid,
+  //       'mobile': user.phoneNumber,
+  //       'user_role': 'user',
+  //     });
+  //
+  //
+  //     if (user != null) {
+  //       // Save login to SharedPreferences
+  //       await widget.prefs?.setBool('userLoggedIn', true);
+  //
+  //       // Navigate to BottomBarView
+  //       Navigator.of(context).pushReplacement(
+  //         MaterialPageRoute(builder: (context) => BottomBarView(user: user)),
+  //       );
+  //     }
+  //   } catch (e) {
+  //     _showErrorDialog('Google Sign-In failed. Please try again.');
+  //     print('Google Sign-In Error: $e');
+  //   }
+  // }
+
   Future<void> _signInWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
       if (googleUser == null) return; // Cancelled
+
+      // 👇 Confirmation dialog
+      bool confirm = await showDialog(context: context,
+        builder: (context) => AlertDialog(
+          backgroundColor: AppColors.fontColorWhite,
+          title: Row(
+            children: [
+              CircleAvatar(
+                radius: 15,
+                backgroundImage: NetworkImage(googleUser.photoUrl ?? ''),
+              ),
+              SizedBox(width: 10),
+              Text(googleUser.email,style: TextStyle(
+                  fontSize: 12,fontWeight: FontWeight.w800
+              ),),
+            ],
+          ),
+          content: Row(
+            children: [
+
+              SizedBox(width: 10,),
+              Expanded(
+                child: Text('By continue Google will share your name,email address and profile '
+                    'picture with Job Tasker',style: TextStyle(
+                    fontSize: 12
+                ),),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: Text('Continue'),
+            ),
+          ],
+        ),
+      );
+
+      if (!confirm) {
+        await googleSignIn.disconnect(); // if user cancels, disconnect
+        return;
+      }
 
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
 
@@ -91,6 +180,7 @@ class _SignInViewState extends State<SignInView> {
 
       final user = userCredential.user;
 
+      // ✅ Save to Firestore
       await FirebaseFirestore.instance.collection('users').doc(user!.uid).set({
         'name': user.displayName,
         'email': user.email,
@@ -100,12 +190,8 @@ class _SignInViewState extends State<SignInView> {
         'user_role': 'user',
       });
 
-
       if (user != null) {
-        // Save login to SharedPreferences
         await widget.prefs?.setBool('userLoggedIn', true);
-
-        // Navigate to BottomBarView
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => BottomBarView(user: user)),
         );
@@ -115,6 +201,7 @@ class _SignInViewState extends State<SignInView> {
       print('Google Sign-In Error: $e');
     }
   }
+
 
 
   @override

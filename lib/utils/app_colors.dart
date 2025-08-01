@@ -28,6 +28,9 @@ class AppColors {
   static const Color btnGradient1 = Color(0xFF4776E6);
   static const Color btnGradient2 = Color(0xFF0C8797);
   static const Color btnGradient3 = Color(0xFF13C6FF);
+  static const Color btnGradient4 = Color(0xFF000033);
+  static const Color btnGradient5 = Color(0xFF1a1aff);
+  static const Color btnGradient6 = Color(0xFF80d4ff);
 
   static const Color containerColor1 = Color(0xFF639cd9);
   static const Color containerColor2 = Color(0xFF5454c5);
@@ -41,5 +44,5 @@ class AppColors {
   static const Color containerColor10 = Color(0xFFd902ee);
   static const Color containerColor11 = Color(0xFFffd79d);
   static const Color containerColor12 = Color(0xFF320d3e);
-  static const Color containerColor13 = Color(0xFF7a2048);
+  static const Color containerColor13 = Color(0xFF480000);
 }

@@ -223,12 +223,14 @@ class _RejectJobComponentState extends State<RejectJobComponent> {
                             ),
                           ),
                           SizedBox(width: 2),
-                          Text(
-                            widget.location,
-                            style: TextStyle(
-                              fontSize: AppDimensions.kFontSize10,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.fontColorDark,
+                          Expanded(
+                            child: Text(
+                              widget.location,
+                              style: TextStyle(
+                                fontSize: AppDimensions.kFontSize10,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.fontColorDark,
+                              ),
                             ),
                           ),
                         ],

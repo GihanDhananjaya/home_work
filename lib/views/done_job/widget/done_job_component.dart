@@ -9,7 +9,7 @@ import '../../../common/app_button.dart';
 import '../../../utils/app_colors.dart';
 import '../../../utils/app_dimensions.dart';
 
-class ConfirmJobComponent extends StatefulWidget {
+class DoneJobComponent extends StatefulWidget {
   final String name;
   final String title;
   final String location;
@@ -18,8 +18,9 @@ class ConfirmJobComponent extends StatefulWidget {
   final Time? time;
   final String? adminDescription;
   final String? userName;
+  final String? status;
 
-  ConfirmJobComponent({
+  DoneJobComponent({
     required this.name,
     required this.title,
     required this.location,
@@ -27,14 +28,15 @@ class ConfirmJobComponent extends StatefulWidget {
     this.time,
     this.confirmedDate,
     this.adminDescription,
-    this.userName
+    this.userName,
+    this.status
   });
 
   @override
-  State<ConfirmJobComponent> createState() => _ConfirmJobComponentState();
+  State<DoneJobComponent> createState() => _DoneJobComponentState();
 }
 
-class _ConfirmJobComponentState extends State<ConfirmJobComponent> {
+class _DoneJobComponentState extends State<DoneJobComponent> {
   Time _time = Time(hour: 11, minute: 30, second: 20);
   bool iosStyle = true;
   DateTime selectedDate = DateTime.now();
@@ -71,7 +73,7 @@ class _ConfirmJobComponentState extends State<ConfirmJobComponent> {
       if (userDoc.exists && userDoc.data() != null) {
         var data = userDoc.data() as Map<String, dynamic>;
         setState(() {
-          userRole = data['user_role'] ?? ''; // මෙහි null නම් හිස් string එකක් දමනවා
+          userRole = data['user_role'] ?? '';
         });
       } else {
         setState(() {
@@ -111,28 +113,20 @@ class _ConfirmJobComponentState extends State<ConfirmJobComponent> {
                     fontSize: AppDimensions.kFontSize14,
                   ),
                 ),
-                userRole == 'admin'?
-                  GestureDetector(
-                    onTap: widget.onTap,
-                    child: Container(
-                      width: 65,
-                      height: 21,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        color: AppColors.colorPrimary,
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Complete',
-                          style: TextStyle(
-                            fontSize: AppDimensions.kFontSize10,
-                            fontWeight: FontWeight.w700,
-                            color: AppColors.fontColorWhite,
-                          ),
-                        ),
-                      ),
+                Center(
+                  child: Text(
+                    '${widget.status} job',
+                    style: TextStyle(
+                      fontSize: AppDimensions.kFontSize14,
+                      fontWeight: FontWeight.w500,
+                      color: widget.status?.toLowerCase() == 'complete'
+                        ? AppColors.colorPrimary
+                        : widget.status?.toLowerCase() == 'reject'
+                        ? AppColors.containerColor13
+                        : AppColors.fontColorGray,
                     ),
-                  ):SizedBox.shrink(),
+                  ),
+                )
               ],
             ),
             SizedBox(height: 10),
@@ -240,12 +234,14 @@ class _ConfirmJobComponentState extends State<ConfirmJobComponent> {
                             ),
                           ),
                           SizedBox(width: 2),
-                          Text(
-                            widget.location,
-                            style: TextStyle(
-                              fontSize: AppDimensions.kFontSize10,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.fontColorDark,
+                          Expanded(
+                            child: Text(
+                              widget.location,
+                              style: TextStyle(
+                                fontSize: AppDimensions.kFontSize10,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.fontColorDark,
+                              ),
                             ),
                           ),
                         ],

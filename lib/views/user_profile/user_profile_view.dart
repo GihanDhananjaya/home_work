@@ -11,6 +11,8 @@ import '../../utils/app_images.dart';
 import '../../utils/navigation_routes.dart';
 import '../sign_in/sign_in_view.dart';
 import 'common/profile_component.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
 
 class UserData{
   final String userName;
@@ -36,6 +38,10 @@ class _UserProfileState extends State<UserProfile> {
   String? userEmail;
   String? userMobileNumber;
   int? userId;
+
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -267,7 +273,7 @@ class _UserProfileState extends State<UserProfile> {
                     title: 'Logout',
                     description: 'Are you sure you want to log out?',
                     onPositiveCallback: () async {
-
+                      await googleSignIn.disconnect();
                       await FirebaseAuth.instance.signOut();
 
                       SharedPreferences prefs = await SharedPreferences.getInstance();

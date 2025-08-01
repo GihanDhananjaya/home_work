@@ -84,7 +84,7 @@ class _AppMobileNumberFieldState extends State<AppMobileNumberField> {
       },
       focusNode: widget.focusNode,
       controller: widget.controller,
-      maxLength: 97,
+      maxLength: 9,
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       textInputAction: TextInputAction.done,
       style: TextStyle(

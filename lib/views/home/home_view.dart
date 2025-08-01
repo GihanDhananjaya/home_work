@@ -179,7 +179,7 @@ class _HomeViewState extends State<HomeView> {
                           number: getProgress(_rejectedJobs),
                           image: AppImages.appJob4,
                           containerBackGround:
-                          AppColors.containerColor6,
+                          AppColors.containerColor13,
                           onTap: () {
                             Navigator.pushNamed(context, AppRoutes.rejectJob);
                           }, presentValue: _rejectedJobs,
@@ -188,14 +188,24 @@ class _HomeViewState extends State<HomeView> {
                     ],
                   ),
                   const SizedBox(height: 38),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
-                    color: AppColors.btnGradient1),
-                    width: double.infinity,
-                    child: Text('Contact us to repair any home appliance in your home. ',style: TextStyle(
-                      fontSize: 15,fontWeight: FontWeight.w500,color: Colors.white
-                    ),),
+                  GestureDetector(
+                    onTap: (){
+                      Navigator.pushNamed(context, AppRoutes.doneJob);
+                    },
+                    child: Container(
+
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8),
+                      color: AppColors.btnGradient6),
+                      width: double.infinity,
+                      child: Row(
+                        children: [
+                          Image.asset(AppImages.appHistory,height: 80,width: 60,),
+                          Text('Repair History',style: TextStyle(
+                            fontSize: 15,fontWeight: FontWeight.w500,color: Colors.black
+                          ),),
+                        ],
+                      ),
+                    ),
                   ),
 
                 ],

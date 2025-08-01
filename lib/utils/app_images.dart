@@ -74,4 +74,6 @@ class AppImages {
   static const String appLoginImg = 'images/png/app_login_img.png';
   static const String appInternetErrorImg = 'images/png/internet_error_img.png';
   static const String appGoogleImg = 'images/png/app_google_img.png';
+  static const String appServiceHistory = 'images/png/app_service_history.png';
+  static const String appHistory = 'images/png/history_img.png';
 }

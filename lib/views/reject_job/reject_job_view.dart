@@ -95,11 +95,12 @@ class _RejectJobViewState extends State<RejectJobView> {
             ? FirebaseFirestore.instance.collection('reject_job').snapshots()
             : FirebaseFirestore.instance.collection('reject_job').where('user_id', isEqualTo: currentUser!.uid).snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return Center(child: CircularProgressIndicator());
-          }
+
           if (_initialLoading ||snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
+          }
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(child: Text('No data available'));
           }
           return ListView.builder(
             itemCount: snapshot.data!.docs.length,
@@ -122,6 +123,20 @@ class _RejectJobViewState extends State<RejectJobView> {
                       positiveButtonText: 'Yes',
                       onPositiveCallback: () async {
                         try {
+
+                          // Get the job data
+                          var jobData = document.data() as Map<String, dynamic>;
+
+                          // Add status field
+                          jobData['status'] = 'reject';
+                          jobData['rejected_at'] = Timestamp.now(); // optional
+
+                          // Save to done_job table
+                          await FirebaseFirestore.instance
+                              .collection('done_job')
+                              .doc(document.id)
+                              .set(jobData);
+
                           await FirebaseFirestore.instance
                               .collection('reject_job')
                               .doc(document.id)

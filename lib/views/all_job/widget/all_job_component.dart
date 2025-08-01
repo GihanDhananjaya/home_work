@@ -203,6 +203,7 @@ class _AllJobComponentState extends State<AllJobComponent> {
                       ),
                       SizedBox(height: 4),
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Icon(
                             Icons.location_on_outlined,

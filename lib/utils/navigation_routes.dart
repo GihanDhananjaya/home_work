@@ -6,6 +6,7 @@ import 'package:home_work/views/new_job/new_job_view.dart';
 import 'package:home_work/views/reject_job/reject_job_view.dart';
 import 'package:home_work/views/sign_in/sign_in_view.dart';
 import 'package:home_work/views/sign_up/sign_up_view.dart';
+import '../views/done_job/done_job_view.dart';
 import '../views/user_profile/edit_profile_details_view.dart';
 import '../views/user_profile/user_profile_view.dart';
 
@@ -18,6 +19,7 @@ class AppRoutes {
   static const String confirmJob = '/confirm_job_view';
   static const String rejectJob = '/reject_job_view';
   static const String editProfile = '/edit_profile_details_view';
+  static const String doneJob = '/done_job_view';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -46,6 +48,9 @@ class AppRoutes {
         return MaterialPageRoute(
           builder: (_) => EditProfileDetails(userdata: settings.arguments as UserData),
         );
+
+      case doneJob:
+        return MaterialPageRoute(builder: (_) => DoneJobView());
 
       default:
         return MaterialPageRoute(

@@ -3,18 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:home_work/views/confirm_job/widget/confirm_job_component.dart';
 import 'package:day_night_time_picker/lib/state/time.dart';
+import 'package:home_work/views/done_job/widget/done_job_component.dart';
 
 import '../../common/show_dialog.dart';
 import '../../utils/app_colors.dart';
 
-class ConfirmJobView extends StatefulWidget {
-  const ConfirmJobView({super.key});
+class DoneJobView extends StatefulWidget {
+  const DoneJobView({super.key});
 
   @override
-  State<ConfirmJobView> createState() => _ConfirmJobViewState();
+  State<DoneJobView> createState() => _DoneJobViewState();
 }
 
-class _ConfirmJobViewState extends State<ConfirmJobView> {
+class _DoneJobViewState extends State<DoneJobView> {
   String userRole = '';
   bool _initialLoading = true;
 
@@ -85,23 +86,23 @@ class _ConfirmJobViewState extends State<ConfirmJobView> {
           ),
         ),
         title: Text(
-          'Confirm Jobs',
+          'Jobs History',
           style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500,fontSize: 18),
         ),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: userRole == 'admin'
-            ? FirebaseFirestore.instance.collection('confirm_job').snapshots()
-            : FirebaseFirestore.instance.collection('confirm_job').where('user_id', isEqualTo: currentUser!.uid).snapshots(),
+            ? FirebaseFirestore.instance.collection('done_job').snapshots()
+            : FirebaseFirestore.instance.collection('done_job').where('user_id', isEqualTo: currentUser!.uid).snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Center(child: CircularProgressIndicator());
+          }
           if (_initialLoading ||snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: Text('No data available'));
-          }
           return ListView.builder(
+            shrinkWrap: true,
             itemCount: snapshot.data!.docs.length,
             itemBuilder: (context, index) {
               var document = snapshot.data!.docs[index];
@@ -112,43 +113,7 @@ class _ConfirmJobViewState extends State<ConfirmJobView> {
 
               return Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ConfirmJobComponent(
-                  onTap: (){
-                    CommonDialogUtil.showAppDialog(
-                      context: context,
-                      title: 'Success',
-                      description: 'Do you done this Job!',
-                      negativeButtonText: 'No',
-                      positiveButtonText: 'Yes',
-                      onPositiveCallback: () async {
-                        try {
-
-                          // Get the job data
-                          var jobData = document.data() as Map<String, dynamic>;
-
-                          // Add status field
-                          jobData['status'] = 'complete';
-                          jobData['completed_at'] = Timestamp.now(); // optional
-
-                          // Save to done_job table
-                          await FirebaseFirestore.instance
-                              .collection('done_job')
-                              .doc(document.id)
-                              .set(jobData);
-
-
-                          await FirebaseFirestore.instance
-                              .collection('confirm_job')
-                              .doc(document.id)
-                              .delete();
-                        } catch (e) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Error deleting job: $e')),
-                          );
-                        }
-                      },
-                    );
-                  },
+                child: DoneJobComponent(
                   adminDescription: document['admin_description'],
                   confirmedDate: confirmedDate,
                   time: time,
@@ -156,6 +121,7 @@ class _ConfirmJobViewState extends State<ConfirmJobView> {
                   title: document['device'],
                   location: document['location'],
                   userName: document['name'],
+                  status: document['status'],
                 ),
               );
             },
