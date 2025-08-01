@@ -123,11 +123,7 @@ class _RejectJobViewState extends State<RejectJobView> {
                       positiveButtonText: 'Yes',
                       onPositiveCallback: () async {
                         try {
-
-                          // Get the job data
                           var jobData = document.data() as Map<String, dynamic>;
-
-                          // Add status field
                           jobData['status'] = 'reject';
                           jobData['rejected_at'] = Timestamp.now(); // optional
 
