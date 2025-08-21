@@ -38,6 +38,7 @@ class _UserProfileState extends State<UserProfile> {
   String? userEmail;
   String? userMobileNumber;
   int? userId;
+  String? image;
 
   final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -59,13 +60,15 @@ class _UserProfileState extends State<UserProfile> {
       if (prefs.containsKey('userName') &&
           prefs.containsKey('userEmail') &&
           prefs.containsKey('mobile') &&
-          prefs.containsKey('user_id')) {
+          prefs.containsKey('user_id')&&
+          prefs.containsKey('user.photoURL,')) {
         // Load from SharedPreferences
         setState(() {
           userName = prefs.getString('userName');
           userEmail = prefs.getString('userEmail');
           userMobileNumber = prefs.getString('mobile');
           userId = prefs.getInt('user_id');
+          image = prefs.getString('photoURL');
         });
         return; // Stop here (don’t fetch from Firestore)
       }
@@ -134,42 +137,42 @@ class _UserProfileState extends State<UserProfile> {
           padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
           child: Column(
             children: [
-              SizedBox(height: 20),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: [
-              //     SizedBox(
-              //       width: 82,
-              //       height: 82,
-              //       child: ClipRRect(
-              //         borderRadius: BorderRadius.circular(100),
-              //         child: CachedNetworkImage(
-              //           imageUrl: '',
-              //           fit: BoxFit.fill,
-              //           placeholder: (context, url) => AppRectangleShimmer(
-              //             color: AppColors.fontColorDark.withOpacity(0.8),
-              //             height: double.infinity,
-              //             width: double.infinity,
-              //           ),
-              //           errorWidget: (context, url, error) => CircleAvatar(
-              //             backgroundColor: AppColors.fontColorGray.withOpacity(0.7),
-              //             child: Center(
-              //               child: Text(
-              //                 userName!?? "User Name",
-              //                 style: TextStyle(
-              //                   color: AppColors.fontColorWhite,
-              //                   fontSize: AppDimensions.kFontSize28,
-              //                   fontWeight: FontWeight.w500,
-              //                 ),
-              //               ),
-              //             ),
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ],
-              // ),
+               SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 82,
+                    height: 82,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: CachedNetworkImage(
+                        imageUrl: image ?? "user name",
+                        fit: BoxFit.fill,
+                        placeholder: (context, url) => AppRectangleShimmer(
+                          color: AppColors.fontColorDark.withOpacity(0.8),
+                          height: double.infinity,
+                          width: double.infinity,
+                        ),
+                        errorWidget: (context, url, error) => CircleAvatar(
+                          backgroundColor: AppColors.fontColorGray.withOpacity(0.7),
+                          child: Center(
+                            child: Text(
+                              userName ?? "User Name",
+                              style: TextStyle(
+                                color: AppColors.fontColorWhite,
+                                fontSize: AppDimensions.kFontSize28,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               SizedBox(height: 20,),
               Container(
                 padding: EdgeInsets.all(20),
@@ -273,7 +276,7 @@ class _UserProfileState extends State<UserProfile> {
                     title: 'Logout',
                     description: 'Are you sure you want to log out?',
                     onPositiveCallback: () async {
-                      await googleSignIn.disconnect();
+                      //await googleSignIn.disconnect();
                       await FirebaseAuth.instance.signOut();
 
                       SharedPreferences prefs = await SharedPreferences.getInstance();

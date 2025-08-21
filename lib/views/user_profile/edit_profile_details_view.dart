@@ -76,30 +76,30 @@ class _EditProfileDetailsState extends State<EditProfileDetails> {
               const SizedBox(height: 10),
               AppTextField(hint: 'Email',controller: emailController,),
               const SizedBox(height: 10),
-
-              AppMobileNumberField(
-                appMobileNumberController: null,
-                title: 'Mobile Number',
-                focusNode: focusNode,
-                initialCountryCode: phoneNumber != null
-                    ? phoneNumber!.countryCode
-                    .replaceAll('+', '')
-                    : null,
-                onChange: (phone ) {
-                  setState(() {
-                    if (phone.number.isNotEmpty) {
-                      phoneNumber = phone;
-                    } else {
-                      if (phoneNumber != null) {
-                        phoneNumber!.number = '';
-                      }
-                    }
-                  });
-                },
-                controller: mobileNumberController,
-                onCountryChange: (country ) {
-                  focusNode.requestFocus(); },
-              ),
+              //
+              // AppMobileNumberField(
+              //   appMobileNumberController: null,
+              //   title: 'Mobile Number',
+              //   focusNode: focusNode,
+              //   initialCountryCode: phoneNumber != null
+              //       ? phoneNumber!.countryCode
+              //       .replaceAll('+', '')
+              //       : null,
+              //   onChange: (phone ) {
+              //     setState(() {
+              //       if (phone.number.isNotEmpty) {
+              //         phoneNumber = phone;
+              //       } else {
+              //         if (phoneNumber != null) {
+              //           phoneNumber!.number = '';
+              //         }
+              //       }
+              //     });
+              //   },
+              //   controller: mobileNumberController,
+              //   onCountryChange: (country ) {
+              //     focusNode.requestFocus(); },
+              // ),
               SizedBox(height: 40,),
 
               AppButton(

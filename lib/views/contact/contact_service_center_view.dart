@@ -40,9 +40,10 @@ class _ContactServiceCenterViewState extends State<ContactServiceCenterView> {
             ),
           ),
         ),
-        title: Center(
+        title: Padding(
+          padding: EdgeInsets.only(left: 50.0),
           child: Text(
-            'Contact Service Center',
+            'User Points Table',
             style: TextStyle(
                 color: Colors.white, fontWeight: FontWeight.w500, fontSize: 18),
           ),
@@ -74,21 +75,21 @@ class _ContactServiceCenterViewState extends State<ContactServiceCenterView> {
               style: TextStyle(color: Colors.black),
             ),
             const SizedBox(height: 12),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkResponse(
-                      onTap:(){
-                        _makePhoneCall('0712345678');
-                      },
-                      child: _buildInfoCard('400+', 'Call Now', Icons.call,Colors.green)),
-                  _buildInfoCard('4 Yr+', 'Experience', Icons.work_history,Colors.blueAccent),
-                  _buildInfoCard('4.4', 'Rating', Icons.star,Colors.orange),
-                ],
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 40),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       InkResponse(
+            //           onTap:(){
+            //             _makePhoneCall('0712345678');
+            //           },
+            //           child: _buildInfoCard('400+', 'Call Now', Icons.call,Colors.green)),
+            //       _buildInfoCard('4 Yr+', 'Experience', Icons.work_history,Colors.blueAccent),
+            //       _buildInfoCard('4.4', 'Rating', Icons.star,Colors.orange),
+            //     ],
+            //   ),
+            // ),
             const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -124,20 +125,20 @@ class _ContactServiceCenterViewState extends State<ContactServiceCenterView> {
             //     },
             //   ),
             // ),
-            CarouselSlider(
-              items: images.map((imagePath) {
-                return ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.asset(imagePath, fit: BoxFit.cover, width: double.infinity),
-                );
-              }).toList(),
-              options: CarouselOptions(
-                height: 150,
-                autoPlay: true,
-                enlargeCenterPage: true,
-                viewportFraction: 0.9,
-              ),
-            )
+            // CarouselSlider(
+            //   items: images.map((imagePath) {
+            //     return ClipRRect(
+            //       borderRadius: BorderRadius.circular(10),
+            //       child: Image.asset(imagePath, fit: BoxFit.cover, width: double.infinity),
+            //     );
+            //   }).toList(),
+            //   options: CarouselOptions(
+            //     height: 150,
+            //     autoPlay: true,
+            //     enlargeCenterPage: true,
+            //     viewportFraction: 0.9,
+            //   ),
+            // )
 
           ],
         ),
@@ -145,26 +146,26 @@ class _ContactServiceCenterViewState extends State<ContactServiceCenterView> {
     );
   }
 
-  Widget _buildInfoCard(String value, String label, IconData icon,Color iconColor) {
-    return Column(
-      children: [
-        Icon(icon, color: iconColor, size: 28),
-        const SizedBox(height: 4),
-        Text(value, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-        Text(label, style: TextStyle(color: Colors.black, fontSize: 12)),
-      ],
-    );
-  }
+  // Widget _buildInfoCard(String value, String label, IconData icon,Color iconColor) {
+  //   return Column(
+  //     children: [
+  //       Icon(icon, color: iconColor, size: 28),
+  //       const SizedBox(height: 4),
+  //       Text(value, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+  //       Text(label, style: TextStyle(color: Colors.black, fontSize: 12)),
+  //     ],
+  //   );
+  // }
 
-  void _makePhoneCall(String phoneNumber) async {
-    final Uri phoneUri = Uri(scheme: 'tel', path: phoneNumber);
-    if (await canLaunchUrl(phoneUri)) {
-      await launchUrl(phoneUri);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Could not launch phone dialer')),
-      );
-    }
-  }
+  // void _makePhoneCall(String phoneNumber) async {
+  //   final Uri phoneUri = Uri(scheme: 'tel', path: phoneNumber);
+  //   if (await canLaunchUrl(phoneUri)) {
+  //     await launchUrl(phoneUri);
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(content: Text('Could not launch phone dialer')),
+  //     );
+  //   }
+  // }
 
 }

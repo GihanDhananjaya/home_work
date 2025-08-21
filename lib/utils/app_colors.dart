@@ -19,6 +19,7 @@ class AppColors {
 
   static const Color colorSuccess = Colors.green;
   static const Color fontColorSuccess =  Color(0xFF356901);
+  static const Color fontColorSuccess2 =  Color(0xFFB0F527);
   static const Color colorFailed = Colors.red;
   static const Color colorPending = Colors.orange;
   static const Color colorReviewing = Colors.amber;
@@ -45,4 +46,10 @@ class AppColors {
   static const Color containerColor11 = Color(0xFFffd79d);
   static const Color containerColor12 = Color(0xFF320d3e);
   static const Color containerColor13 = Color(0xFF480000);
+
+  static const Color containerColor14 = Color(0xFF0A1931);
+  static const Color containerColor15 = Color(0xFFB3CFE5);
+  static const Color containerColor16 = Color(0xFF4A7FA7);
+  static const Color containerColor17 = Color(0xFF1A3D63);
+  static const Color containerColor18 = Color(0xFFF6FAFD);
 }

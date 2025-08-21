@@ -122,11 +122,7 @@ class _ConfirmJobViewState extends State<ConfirmJobView> {
                       positiveButtonText: 'Yes',
                       onPositiveCallback: () async {
                         try {
-
-                          // Get the job data
                           var jobData = document.data() as Map<String, dynamic>;
-
-                          // Add status field
                           jobData['status'] = 'complete';
                           jobData['completed_at'] = Timestamp.now(); // optional
 

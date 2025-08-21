@@ -124,91 +124,94 @@ class _HomeViewState extends State<HomeView> {
               decoration:  BoxDecoration(
                  color: AppColors.fontColorWhite
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20),
-                  Text(
-                    getFormattedDate(),
-                    style: TextStyle(
-                      fontSize: AppDimensions.kFontSize12,
-                      color: AppColors.fontColorSuccess,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  SizedBox(height: 16),
-                  HomeComponent(
-                    name: 'All Job',
-                    image: AppImages.appJob1,
-                    containerBackGround:
-                    AppColors.colorHover,
-                    onTap: () {
-                      Navigator.pushNamed(context, AppRoutes.allJob);
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  HomeComponent(
-                    name: 'Create Job',
-                    image: AppImages.appJob2,
-                    containerBackGround:
-                    AppColors.containerColor1,
-                    onTap: () {
-                      Navigator.pushNamed(context, AppRoutes.newJob);
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: HomeComponent2(
-                          name: 'Confirm Job',
-                          number: getProgress(_confirmedJobs),
-                          image: AppImages.appJob3,
-                          containerBackGround:
-                          AppColors.containerColor2,
-                          onTap: () {
-                            Navigator.pushNamed(context, AppRoutes.confirmJob);
-                          },
-                          presentValue: _confirmedJobs,
-                        ),
-                      ),
-                      const SizedBox(width: 9),
-                      Expanded(
-                        child: HomeComponent2(
-                          name: 'Rejected Job',
-                          number: getProgress(_rejectedJobs),
-                          image: AppImages.appJob4,
-                          containerBackGround:
-                          AppColors.containerColor13,
-                          onTap: () {
-                            Navigator.pushNamed(context, AppRoutes.rejectJob);
-                          }, presentValue: _rejectedJobs,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 38),
-                  GestureDetector(
-                    onTap: (){
-                      Navigator.pushNamed(context, AppRoutes.doneJob);
-                    },
-                    child: Container(
-
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8),
-                      color: AppColors.btnGradient6),
-                      width: double.infinity,
-                      child: Row(
-                        children: [
-                          Image.asset(AppImages.appHistory,height: 80,width: 60,),
-                          Text('Repair History',style: TextStyle(
-                            fontSize: 15,fontWeight: FontWeight.w500,color: Colors.black
-                          ),),
-                        ],
+              child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 20),
+                    Text(
+                      getFormattedDate(),
+                      style: TextStyle(
+                        fontSize: AppDimensions.kFontSize12,
+                        color: AppColors.fontColorSuccess,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                  ),
+                    SizedBox(height: 16),
+                    HomeComponent(
+                      name: 'All Job',
+                      image: AppImages.appJob1,
+                      containerBackGround:
+                      AppColors.containerColor14,
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRoutes.allJob);
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    HomeComponent(
+                      name: 'Create Job',
+                      image: AppImages.appJob2,
+                      containerBackGround:
+                      AppColors.containerColor15.withOpacity(0.8),
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRoutes.newJob);
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: HomeComponent2(
+                            name: 'Confirm Job',
+                            number: getProgress(_confirmedJobs),
+                            image: AppImages.appJob3,
+                            containerBackGround:
+                            AppColors.containerColor16,
+                            onTap: () {
+                              Navigator.pushNamed(context, AppRoutes.confirmJob);
+                            },
+                            presentValue: _confirmedJobs,
+                          ),
+                        ),
+                        const SizedBox(width: 9),
+                        Expanded(
+                          child: HomeComponent2(
+                            name: 'Rejected Job',
+                            number: getProgress(_rejectedJobs),
+                            image: AppImages.appJob4,
+                            containerBackGround:
+                            AppColors.containerColor13,
+                            onTap: () {
+                              Navigator.pushNamed(context, AppRoutes.rejectJob);
+                            }, presentValue: _rejectedJobs,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 38),
+                    GestureDetector(
+                      onTap: (){
+                        Navigator.pushNamed(context, AppRoutes.doneJob);
+                      },
+                      child: Container(
 
-                ],
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(8),
+                        color: AppColors.containerColor17),
+                        width: double.infinity,
+                        child: Row(
+                          children: [
+                            Image.asset(AppImages.appHistory,height: 80,width: 60,),
+                            Text('Repair History',style: TextStyle(
+                              fontSize: 15,fontWeight: FontWeight.w500,color: Colors.white
+                            ),),
+                          ],
+                        ),
+                      ),
+                    ),
+
+                  ],
+                ),
               ),
             ),
           ),

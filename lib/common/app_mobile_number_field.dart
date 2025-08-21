@@ -1,4 +1,4 @@
-import 'package:fl_country_code_picker/fl_country_code_picker.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl_phone_field/countries.dart';
@@ -38,7 +38,7 @@ class AppMobileNumberField extends StatefulWidget {
 }
 
 class _AppMobileNumberFieldState extends State<AppMobileNumberField> {
-  var _countryCode = const CountryCode(name: 'SL', code: 'SL', dialCode: '+94');
+  var _countryCode =  CountryCode(name: 'SL', code: 'SL', dialCode: '+94');
   double borderRadius = 8;
 
   getDialCode(String countryCode) {
@@ -76,8 +76,8 @@ class _AppMobileNumberFieldState extends State<AppMobileNumberField> {
       onChanged: (number) {
         widget.onChange(
           PhoneNumber(
-            countryISOCode: _countryCode.code,
-            countryCode: '+${_countryCode.dialCode.replaceAll('+', '')}',
+            countryISOCode: _countryCode.code!,
+            countryCode: '+${_countryCode.dialCode!.replaceAll('+', '')}',
             number: widget.controller.text,
           ),
         );
@@ -127,7 +127,7 @@ class _AppMobileNumberFieldState extends State<AppMobileNumberField> {
               crossAxisAlignment: WrapCrossAlignment.center,
               children: <Widget>[
                 Text(
-                  '+${_countryCode.dialCode.replaceAll('+', '')}',
+                  '+${_countryCode.dialCode!.replaceAll('+', '')}',
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: AppDimensions.kFontSize18,

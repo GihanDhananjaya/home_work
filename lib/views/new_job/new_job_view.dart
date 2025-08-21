@@ -125,28 +125,28 @@ class _NewJobViewState extends State<NewJobView> {
                       },
                     ),
                     SizedBox(height: 20),
-                    AppMobileNumberField(
-                      appMobileNumberController: AppMobileNumberController(),
-                      focusNode: focusNode,
-                      initialCountryCode: phoneNumber != null
-                          ? phoneNumber!.countryCode.replaceAll('+', '')
-                          : null,
-                      onChange: (phone) {
-                        setState(() {
-                          if (phone.number.isNotEmpty) {
-                            phoneNumber = phone;
-                          } else {
-                            if (phoneNumber != null) {
-                              phoneNumber!.number = '';
-                            }
-                          }
-                        });
-                      },
-                      controller: mobileNumberController,
-                      onCountryChange: (country) {
-                        focusNode.requestFocus();
-                      },
-                    ),
+                    // AppMobileNumberField(
+                    //   appMobileNumberController: AppMobileNumberController(),
+                    //   focusNode: focusNode,
+                    //   initialCountryCode: phoneNumber != null
+                    //       ? phoneNumber!.countryCode.replaceAll('+', '')
+                    //       : null,
+                    //   onChange: (phone) {
+                    //     setState(() {
+                    //       if (phone.number.isNotEmpty) {
+                    //         phoneNumber = phone;
+                    //       } else {
+                    //         if (phoneNumber != null) {
+                    //           phoneNumber!.number = '';
+                    //         }
+                    //       }
+                    //     });
+                    //   },
+                    //   controller: mobileNumberController,
+                    //   onCountryChange: (country) {
+                    //     focusNode.requestFocus();
+                    //   },
+                    // ),
                     SizedBox(height: 20),
                     AppTextField(
                       inputType: TextInputType.name,
@@ -313,13 +313,13 @@ class _NewJobViewState extends State<NewJobView> {
         description: 'Please enter your name',
       );
     }
-    else if (mobileNumberController.text.isEmpty) {
-      CommonDialogUtil.showAppDialog(
-        context: context,
-        title: 'Error',
-        description: 'Please enter your mobileNumber',
-      );
-    }
+    // else if (mobileNumberController.text.isEmpty) {
+    //   CommonDialogUtil.showAppDialog(
+    //     context: context,
+    //     title: 'Error',
+    //     description: 'Please enter your mobileNumber',
+    //   );
+    // }
     else if (locationController.text.isEmpty) {
       CommonDialogUtil.showAppDialog(
         context: context,
