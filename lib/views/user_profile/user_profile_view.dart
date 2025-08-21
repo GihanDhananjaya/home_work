@@ -137,7 +137,7 @@ class _UserProfileState extends State<UserProfile> {
           padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
           child: Column(
             children: [
-               SizedBox(height: 20),
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
